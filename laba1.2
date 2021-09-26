@@ -1,0 +1,163 @@
+#include<iostream>
+#include<cstdlib>
+#include<conio.h>
+
+using namespace std;
+int main()
+{
+    const int size1 = 10;
+    int size2;
+    int *arr = new int[size1];
+    cout << "Choose how to fill in the array(o/r): ";
+    char letter;
+    cin >> letter;
+    while (letter != 'o' && letter != 'r')
+    {
+        cout << "You\'ve entered an incorrect symbol, please try again: ";
+        cin >> letter;
+    }
+    if (letter == 'o')
+    {
+        cout << "Enter the size of the array(from 1 to 10): ";
+        cin >> size2;
+        while (size2 > size1 || size2 <= 0)
+        {
+            cout << "You\'ve entered a number that is not in the definition area, please try again: ";
+            cin >> size2;
+        }
+        cout << "Enter the elements of the array(1 2 3): ";
+        for (int a = 1; a <= size2; a++)
+        {
+            cin >> arr[a];
+        }
+        cout << "Your array: " << "[ ";
+        for(int a = 1; a<=size2; a++)
+        {
+            cout<<arr[a]<<" ";
+        }
+        cout<<"]"<<endl;
+    }
+    if (letter == 'r')
+    {
+        cout << "Enter the size of the array(from 1 to 10): ";
+        cin >> size2;
+        while (size2>10 || size2<=0)
+        {
+            cout << "You\'ve entered a number that is not in the definition area, please try again: ";
+            cin >> size2;
+        }
+        int min, max;
+        cout << "Enter the minimum element of the array: ";
+        cin >> min;
+        cout << "Enter the maximum element of the array: ";
+        cin >> max;
+        if (min>max)
+        {
+            swap(min,max);
+        }
+        cout << "Your array: ";
+        cout<<"[ ";
+            for (int i = 1; i <= size2; i++)
+            {
+                do {
+                    double d = 1.0 / ((RAND_MAX) + 1.0);
+                    arr[i] = (rand() * d * (max - min + 1) + min);
+                }
+                    while(arr[i]>max || arr[i]<min);
+                     cout << arr[i] << " ";
+            }
+            cout<<"]"<<endl;
+    }
+    int count = 0;
+    for (int i = 2; i <= size2; i++)
+    {
+        if (arr[i]<0)
+        {
+            if (arr[i-1]>=0)
+            {
+                count++;
+            }
+        }
+        if (arr[i]>=0)
+        {
+            if (arr[i-1]<0)
+            {
+               count++;
+            }
+        }
+    }
+    cout << "The amount of sign changes: " << count << endl;
+    int count1, count2, count3;
+    int product = 1;
+    for (int i = 1; i <= size2; i++)
+    {
+        if (arr[i] == 0)
+        {
+            count1 = i;
+            break;
+        }
+    }
+    if (count1<=0)
+    {
+        cout << "There are no zero elements, it\'s recommended"
+                "to you to rerun the program" << endl;
+        return(0);
+    }
+    for (int q = count1 + 1; q <= size2; q++)
+        {
+            if (arr[q] == 0)
+            {
+                count2 = q;
+                break;
+            }
+        }
+    for (int b = size2; b > 0; b--)
+    {
+        if (arr[b] == 0)
+       {
+            count3 = b;
+            break;
+        }
+    }
+    if (count3-count1<=1 || count3==0)
+    {
+       cout << "The product of the array elements located between the first and second zero elements is 0"
+       << endl;
+    }
+    else
+    {
+        for (int w = count1 + 1; w < count2; w++)
+        {
+            product *= arr[w];
+        }
+        cout << "The product of the array elements located between the first and second zero elements: "
+             << product << endl;
+}
+    int  j = size2/2, k = 0;
+    int *arr1 = new int[size2];
+    for(int i = 1; i <= size2; i++)
+    {
+        if((i+1)%2 ==0)
+        {
+            arr1[j] = arr[i];
+            j++;
+        }
+        else
+        {
+            arr1[k] = arr[i];
+            k++;
+        }
+    }
+    cout << "Your converted array: " << "[ ";
+    for(int i = 0; i < size2; i++)
+    {
+         cout << arr1[i]<< "  ";
+    }
+cout << "]" << endl;
+
+    _getch();
+
+    delete[] arr;
+    delete[] arr1;
+    return(0);
+}
