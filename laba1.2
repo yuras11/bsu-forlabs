@@ -104,25 +104,25 @@ int main()
         return(0);
     }
     for (int q = count1 + 1; q <= size2; q++)
+    {
+        if (arr[q] == 0)
         {
-            if (arr[q] == 0)
-            {
-                count2 = q;
-                break;
-            }
+            count2 = q;
+            break;
         }
+    }
     for (int b = size2; b > 0; b--)
     {
         if (arr[b] == 0)
-       {
+        {
             count3 = b;
             break;
         }
     }
     if (count3-count1<=1 || count3==0)
     {
-       cout << "The product of the array elements located between the first and second zero elements is 0"
-       << endl;
+        cout << "The product of the array elements located between the first and second zero elements is 0"
+             << endl;
     }
     else
     {
@@ -132,32 +132,29 @@ int main()
         }
         cout << "The product of the array elements located between the first and second zero elements: "
              << product << endl;
-}
-    int  j = size2/2, k = 0;
-    int *arr1 = new int[size2];
-    for(int i = 1; i <= size2; i++)
-    {
-        if((i+1)%2 ==0)
-        {
-            arr1[j] = arr[i];
-            j++;
-        }
-        else
-        {
-            arr1[k] = arr[i];
-            k++;
-        }
     }
-    cout << "Your converted array: " << "[ ";
-    for(int i = 0; i < size2; i++)
-    {
-         cout << arr1[i]<< "  ";
-    }
-cout << "]" << endl;
+for (int i = size2; i > 0; --i)
+ {
 
-    _getch();
+  for (int j = size2; j > 0; --j)
+  {
+   if (arr[j] % 2 && arr[j - 1])
+   {
+
+   }
+   else {
+    swap(arr[j], arr[i - 1]);
+   }
+  }
+ }
+cout << "Converted array: " << "[ ";
+ for (int i = 0; i < size2; i++)
+ {
+  cout << arr[i] << " ";
+ };
+cout << " ]";
 
     delete[] arr;
-    delete[] arr1;
     return(0);
 }
+
