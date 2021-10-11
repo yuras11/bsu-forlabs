@@ -1,0 +1,106 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+int find_the_most_frequent_element(int firstSpace, int lastSpace, char* inputString);
+void findMaxWord(char* array1);
+int main()
+{
+    const int max_size = 300;
+    char* array1 = new char[max_size];
+    findMaxWord(array1);
+    delete[] array1;
+    return 0;
+}
+int find_the_most_frequent_element(int firstSpace, int lastSpace, char* string1)
+{
+    vector<char> all_letters;
+    vector<int> number_of_the_same_letters(26);
+    char number_of_letters = 'a';
+    for (int i = 0; i < 26; i++)
+    {
+        all_letters.push_back(number_of_letters);
+        number_of_letters++;
+    }
+    for (int i = 0; i < number_of_the_same_letters.size(); i++)
+    {
+        number_of_the_same_letters[i] = 0;
+    }
+    for (int i = firstSpace; i < lastSpace; i++)
+    {
+        for (int j = 0; j < 26; j++)
+        {
+            if (string1[i] == all_letters[j])
+            {
+                number_of_the_same_letters[j]++;
+            }
+        }
+    }
+    int result = 0;
+    for (int i = 0; i < number_of_the_same_letters.size(); i++)
+    {
+        if (number_of_the_same_letters[i] != 0)
+        {
+            result++;
+        }
+    }
+    return result;
+}
+void findMaxWord(char* array1)
+{
+    cout << "Enter your sentence. To complete it, enter \".\" : " << endl;
+    char input = NULL;
+    for (int i = 0; input != '.'; i++)
+    {
+        cin.get(input);
+        array1[i] = input;
+    }
+    int number = 0;
+    for (int i = 0; array1[i] != input; i++)
+    {
+        if (array1[i] == '.')
+        {
+            break;
+        }
+        else
+        {
+            number++;
+        }
+    }
+    number++;
+    vector<int> array_1st_space;
+    vector<int> array_last_space;
+    array_1st_space.push_back(0);
+    for (int i = 0; array1[i] != input; i++)
+    {
+        if (array1[i] == ' ' || array1[i] == '.')
+        {
+            array_1st_space.push_back(i);
+            array_last_space.push_back(i);
+        }
+    }
+    array_last_space.push_back(number - 1);
+    vector<int> result_arr;
+    for (int i = 0; i < array_last_space.size(); i++)
+    {
+        result_arr.push_back(find_the_most_frequent_element(array_1st_space[i], array_last_space[i],
+                                                               array1));
+    }
+
+    int result = INT_MIN, for_i = 0;
+    for (int i = 0; i < result_arr.size(); i++)
+    {
+        if (result_arr[i] >= result)
+        {
+            result = result_arr[i];
+            for_i = i;
+        }
+    }
+    int _1st_space, _last_space;
+    _1st_space = array_1st_space[for_i];
+    _last_space = array_last_space[for_i];
+    cout << "The word in which the number of different symbols is maximum: " << endl;
+    for (int i = _1st_space; i < _last_space; i++)
+    {
+        cout << array1[i];
+    }
+}
