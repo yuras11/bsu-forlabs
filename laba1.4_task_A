@@ -1,0 +1,58 @@
+#include <iostream>
+using namespace std;
+void changeYourNumber(char* string, int value, int radix);
+int main()
+{
+    int value, radix;
+    cout << "Enter a number: ";
+    cin >> value;
+    cout << "Enter a number of system you want\n to translate your number to (from 2 to 36): ";
+    cin >> radix;
+    while (radix < 2 || radix > 36)
+    {
+        cout << "You\'ve entered a number that is not\n in the definition area, please try again: ";
+        cin >> radix;
+    }
+    char *string = new char[value];
+    changeYourNumber(string, value, radix);
+    delete[] string;
+    return 0;
+}
+void changeYourNumber(char* string, int value, int radix)
+{
+    for (int i = 1; i <= value; i++)
+    {
+        string[i] = 'A';
+    }
+    for (int j = value; j >=1; j /= radix)
+    {
+        for (int q = 0; q <= 9; q++)
+        {
+            if (j % radix == q)
+            {
+                string[j] = 48 + q;
+            }
+        }
+        for (int s = 10; s < 36; s++)
+        {
+            if (j % radix == s)
+            {
+                string[j] = 'Z' + s;
+            }
+        }
+    }
+    cout << "Your number in " << radix << " calculus system: ";
+    for (int i = 1; i <= value; i++)
+    {
+        if (string[i] != 'A')
+        {
+           cout << string[i];
+        }
+        else
+        {
+            continue;
+        }
+    }
+    cout << endl;
+    cout << "The address: " << &string << endl;
+}
