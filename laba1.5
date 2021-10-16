@@ -1,0 +1,75 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+void openFiles(ifstream& fin, ofstream& fout1, ofstream& fout2);
+void closeFiles(ifstream& fin, ofstream& fout1, ofstream& fout2);
+int string_with_palindromes(string str, ofstream& fout2);
+void distribution(string& str, ofstream& fout1, ofstream& fout2);
+int main()
+{
+    ifstream fin;
+    ofstream fout1;
+    ofstream fout2;
+    string str;
+    openFiles(fin, fout1, fout2);
+    while (getline(fin, str))
+    {
+        distribution(str, fout1, fout2);
+    }
+    closeFiles(fin, fout1, fout2);
+    return 0;
+}
+void openFiles(ifstream& fin, ofstream& fout1, ofstream& fout2)
+{
+    fin.open("The_file_with_strings.txt");
+    fout1.open("strings_palindroms.txt");
+    fout2.open("strings_with_similar_symbols.txt");
+    if (!fin.is_open() || !fout1.is_open() || !fout2.is_open())
+    {
+        cout << "Some file cannot be opened. ";
+    }
+    cout << "The program is running...." << endl << endl;
+}
+void closeFiles(ifstream& fin, ofstream& fout1, ofstream& fout2)
+{
+    fout2.close();
+    fout1.close();
+    fin.close();
+    if (fin.is_open() || fout1.is_open() || fout2.is_open())
+    {
+        cout << "Some file cannot be closed. ";
+    }
+    cout << "Program is finished. " << endl;
+}
+void distribution(string& str, ofstream& fout1, ofstream& fout2)
+{
+    if (string_with_palindromes(str, fout2))
+    {
+        fout1 << str << '\n';
+    }
+}
+int string_with_palindromes(string str, ofstream& fout2)
+{
+    bool b1 = 1;
+    for (int i = 0; i < str.size(); i++) {
+        if (str[0] != str[i]) {
+            b1 = 0;
+            break;
+        }
+    }
+    if (b1)
+        fout2 << str << '\n';
+    int count = str.size();
+    bool b = 1;
+    for (int j = 0; j < (str.size() / 2 + 1); j++)
+    {
+        count--;
+        if (str[j] != str[count])
+        {
+            b = 0;
+            break;
+        }
+    }
+    return b;
+}
