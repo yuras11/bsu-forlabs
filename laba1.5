@@ -1,75 +1,83 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
-void openFiles(ifstream& fin, ofstream& fout1, ofstream& fout2);
+void checkFiles(ifstream& fin, ofstream& fout1, ofstream& fout2);
 void closeFiles(ifstream& fin, ofstream& fout1, ofstream& fout2);
-int string_with_palindromes(string str, ofstream& fout2);
-void distribution(string& str, ofstream& fout1, ofstream& fout2);
+void string_with_palindromes_and_similar_strings(vector <string> &string1, ofstream& fout1, ofstream& fout2);
 int main()
 {
-    ifstream fin;
-    ofstream fout1;
-    ofstream fout2;
+    ifstream fin("File_with_strings.txt");
+    ofstream fout1("strings_palindroms.txt");
+    ofstream fout2("strings_with_similar_symbols.txt");
     string str;
-    openFiles(fin, fout1, fout2);
+    vector <string> string1;
+    checkFiles(fin, fout1, fout2);
     while (getline(fin, str))
     {
-        distribution(str, fout1, fout2);
+        string1.push_back(str);
     }
+    string_with_palindromes_and_similar_strings(string1, fout1, fout2);
     closeFiles(fin, fout1, fout2);
     return 0;
 }
-void openFiles(ifstream& fin, ofstream& fout1, ofstream& fout2)
+void checkFiles(ifstream& fin, ofstream& fout1, ofstream& fout2)
 {
-    fin.open("The_file_with_strings.txt");
-    fout1.open("strings_palindroms.txt");
-    fout2.open("strings_with_similar_symbols.txt");
     if (!fin.is_open() || !fout1.is_open() || !fout2.is_open())
     {
         cout << "Some file cannot be opened. ";
     }
-    cout << "The program is running...." << endl << endl;
+    cout << "Files are opened." << endl << endl;
 }
 void closeFiles(ifstream& fin, ofstream& fout1, ofstream& fout2)
 {
-    fout2.close();
-    fout1.close();
     fin.close();
+    fout1.close();
+    fout2.close();
     if (fin.is_open() || fout1.is_open() || fout2.is_open())
     {
         cout << "Some file cannot be closed. ";
     }
-    cout << "Program is finished. " << endl;
+    cout << "Files are closed." << endl;
 }
-void distribution(string& str, ofstream& fout1, ofstream& fout2)
+bool AllSameSymbols(string s_copy)
 {
-    if (string_with_palindromes(str, fout2))
+    for (int r = 1; r < s_copy.size(); r++)
     {
-        fout1 << str << '\n';
-    }
-}
-int string_with_palindromes(string str, ofstream& fout2)
-{
-    bool b1 = 1;
-    for (int i = 0; i < str.size(); i++) {
-        if (str[0] != str[i]) {
-            b1 = 0;
-            break;
-        }
-    }
-    if (b1)
-        fout2 << str << '\n';
-    int count = str.size();
-    bool b = 1;
-    for (int j = 0; j < (str.size() / 2 + 1); j++)
-    {
-        count--;
-        if (str[j] != str[count])
+        if (s_copy[r] != s_copy[0])
         {
-            b = 0;
-            break;
+            return false;
         }
     }
-    return b;
+    return true;
+}
+void string_with_palindromes_and_similar_strings(vector <string> &string1, ofstream& fout1, ofstream& fout2)
+{
+    for (int i = 0; i < string1.size(); i++)
+    {
+        string s_copy = string1[i];
+        for (int j = string1[i].size() - 1; j >= 0; j--)
+        {
+            if (string1[i][j] >= 'A' && string1[i][j] <= 'Z')
+            {
+                int temp = string1[i][j] - 'A';
+                s_copy[j] = 'a' + temp;
+            }
+            if (string1[i][j] == '.' || string1[i][j] == ' ' || string1[i][j] == '?'
+                || string1[i][j] == ',' || string1[i][j] == '-' || string1[i][j] == '\"')
+            {
+                s_copy.erase(j, 1);
+            }
+        }
+        string s_copy1(s_copy.rbegin(), s_copy.rend());
+        if (s_copy == s_copy1)
+        {
+            fout1 << string1[i] << endl;
+        }
+        if (AllSameSymbols(s_copy))
+        {
+            fout2 << string1[i] << endl;
+        }
+    }
 }
