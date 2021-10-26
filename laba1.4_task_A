@@ -37,7 +37,7 @@ void changeYourNumber(char* string, int value, int radix)
         {
             if (j % radix == s)
             {
-                string[j] = 'Z' + s;
+                string[j] = 'W' + s;
             }
         }
     }
