@@ -2,18 +2,13 @@
 #include <cassert>
 Fraction::Fraction(int numerator, int denominator):
         m_numerator(numerator), m_denominator(denominator)
-        {
+{
     assert (denominator != 0);
 }
 Fraction::Fraction(const Fraction &copy)
 {
-   this->m_numerator = copy.m_numerator;
-   this->m_denominator = copy.m_denominator;
-}
-void Fraction::check_fraction_on_property(Fraction f)
-{
-    f = proper_Fraction(f);
-    assert (f.getNumerator() > f.getDenominator());
+    this->m_numerator = copy.m_numerator;
+    this->m_denominator = copy.m_denominator;
 }
 Fraction Fraction::proper_Fraction(Fraction f)
 {
@@ -28,10 +23,19 @@ Fraction Fraction::proper_Fraction(Fraction f)
         Fraction Drob_2 ( -1 *f.getNumerator(), -1*f.getDenominator());
         Drob = Drob_2;
     }
-    int p = gcd(Drob.getNumerator(), Drob.getDenominator());
+    int p = abs(gcd(Drob.getNumerator(), Drob.getDenominator()));
     Fraction Drob_3(Drob.getNumerator()/p, Drob.getDenominator()/p);
     Drob = Drob_3;
     return Drob;
+}
+int Fraction::gcd (int a, int b)
+{
+    while (b)
+    {
+        a %= b;
+        swap (a, b);
+    }
+    return a;
 }
 void Fraction::printFraction()
 {
