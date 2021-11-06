@@ -1,159 +1,144 @@
-#include<iostream>
-#include<cstdlib>
-
+#include <iostream>
 using namespace std;
 int main()
 {
-    const int size1 = 10;
-    int size2;
-    int *arr = new int[size1];
-    cout << "Choose how to fill in the array(o/r): ";
+    const int size = 15;
+    int size1;
+    cout << "Enter the size of the array: ";
+    cin >> size1;
+    while (size1 > size)
+    {
+        cout << "You\'ve entered a too big number, try again:";
+        cin >> size1;
+    }
+    int* array  = new int[size1];
+    cout << "Choose how you want to fill in the array.\n";
+    cout << "o - on your own, r - randomly." << endl;
     char letter;
     cin >> letter;
-    while (letter != 'o' && letter != 'r')
+    if (letter != 'o' && letter != 'r')
     {
-        cout << "You\'ve entered an incorrect symbol, please try again: ";
+        cout << "You\'ve entered an invalid symbol, please try again: ";
         cin >> letter;
     }
     if (letter == 'o')
     {
-        cout << "Enter the size of the array(from 1 to 10): ";
-        cin >> size2;
-        while (size2 > size1 || size2 <= 0)
+        int count = 1;
+        for (int i = 0; i < size1; i++)
         {
-            cout << "You\'ve entered a number that is not in the definition area, please try again: ";
-            cin >> size2;
+            cout << "Enter the " << count << " element of the array: " << endl;
+            cin >> array[i];
+            count++;
         }
-        cout << "Enter the elements of the array(1 2 3): ";
-        for (int a = 1; a <= size2; a++)
+        cout << "Your array:" << endl;
+        cout << "[" << " ";
+        for (int i = 0; i < size1; i++)
         {
-            cin >> arr[a];
+            cout << array[i] << " ";
         }
-        cout << "Your array: " << "[ ";
-        for(int a = 1; a<=size2; a++)
-        {
-            cout<<arr[a]<<" ";
-        }
-        cout<<"]"<<endl;
+        cout << "]" << endl;
     }
     if (letter == 'r')
     {
-        cout << "Enter the size of the array(from 1 to 10): ";
-        cin >> size2;
-        while (size2>10 || size2<=0)
-        {
-            cout << "You\'ve entered a number that is not in the definition area, please try again: ";
-            cin >> size2;
-        }
         int min, max;
-        cout << "Enter the minimum element of the array: ";
+        cout << "Enter the minimum: ";
         cin >> min;
-        cout << "Enter the maximum element of the array: ";
+        cout << "Enter the maximum: ";
         cin >> max;
-        if (min>max)
+        if (min > max)
         {
             swap(min,max);
         }
-        cout << "Your array: ";
-        cout<<"[ ";
-            for (int i = 1; i <= size2; i++)
-            {
-                do {
-                    double d = 1.0 / ((RAND_MAX) + 1.0);
-                    arr[i] = (rand() * d * (max - min + 1) + min);
-                }
-                    while(arr[i]>max || arr[i]<min);
-                     cout << arr[i] << " ";
-            }
-            cout<<"]"<<endl;
+        double d = 1.0 / ((RAND_MAX) + 1.0);
+        for (int i = 0; i < size1; i++)
+        {
+            array[i] = (rand() * d * (max - min + 1) + min);
+        }
+        cout << "Your array:" << endl;
+        cout << "[" << " ";
+        for (int i = 0; i < size1; i++)
+        {
+            cout << array[i] << " ";
+        }
+        cout << "]" << endl;
     }
-    int count = 0;
-    for (int i = 2; i <= size2; i++)
+    int sign_changes = 0;
+    for (int i = 0; i < size1 - 1; i++)
     {
-        if (arr[i]<0)
+        if (array[i] >= 0 && array[i+1] < 0)
         {
-            if (arr[i-1]>=0)
-            {
-                count++;
-            }
+            sign_changes++;
         }
-        if (arr[i]>=0)
+        if (array[i] < 0 && array[i+1] >= 0)
         {
-            if (arr[i-1]<0)
+            sign_changes++;
+        }
+    }
+    cout << "The amount of sign changes: " << sign_changes << endl;
+    int first_null = size1 + 1;
+    for (int i = 0; i < size1; i++)
+    {
+        if(array[i] == 0)
+        {
+            first_null = i;
+            break;
+        }
+    }
+    int second_null = size1 + 2;
+    if (first_null != size1 + 1)
+    {
+        for (int j = first_null + 1; j < size1; j++)
+        {
+            if(array[j] == 0)
             {
-               count++;
+                second_null = j;
+                break;
             }
         }
     }
-    cout << "The amount of sign changes: " << count << endl;
-    int count1, count2, count3;
+    int third_null = size1 + 3;
+    for (int m = size1 - 1; m >= 0; m--)
+    {
+        if(array[m] == 0)
+        {
+            third_null = m;
+            break;
+        }
+    }
     int product = 1;
-    for (int i = 1; i <= size2; i++)
+    if (first_null == third_null)
     {
-        if (arr[i] == 0)
+        cout << "There is the only null in the array." << endl;
+    }
+    if(first_null + third_null == 2*size1 + 4)
+    {
+        cout << "There are no nulls in the array." << endl;
+    }
+    if(first_null != third_null && first_null + third_null != 2*size1 + 4)
+    {
+        for (int k = first_null + 1; k < second_null; k++)
         {
-            count1 = i;
-            break;
+            product *= array[k];
+        }
+        cout << "The product of elements between first and second nulls is: " << product << endl;
+    }
+    for (int i = size1-1; i > 0; i--)
+    {
+        for (int j = size1-1; j >= 0; j--)
+        {
+            if(array[j] % 2 == 0 && array[j-1] % 2 != 0)
+            {
+                swap(array[j],array[j-1]);
+            }
         }
     }
-    if (count1<=0)
+    cout << "Converted array: " << endl;
+    cout << "[ ";
+    for (int i = 0; i < size1; i++)
     {
-        cout << "There are no zero elements, it\'s recommended"
-                "to you to rerun the program" << endl;
-        return(0);
+        cout << array[i] << " ";
     }
-    for (int q = count1 + 1; q <= size2; q++)
-    {
-        if (arr[q] == 0)
-        {
-            count2 = q;
-            break;
-        }
-    }
-    for (int b = size2; b > 0; b--)
-    {
-        if (arr[b] == 0)
-        {
-            count3 = b;
-            break;
-        }
-    }
-    if (count3-count1<=1 || count3==0)
-    {
-        cout << "The product of the array elements located between the first and second zero elements is 0"
-             << endl;
-    }
-    else
-    {
-        for (int w = count1 + 1; w < count2; w++)
-        {
-            product *= arr[w];
-        }
-        cout << "The product of the array elements located between the first and second zero elements: "
-             << product << endl;
-    }
-for (int i = size2; i > 0; --i)
- {
-
-  for (int j = size2; j > 0; --j)
-  {
-   if (arr[j] % 2 && arr[j - 1])
-   {
-
-   }
-   else {
-    swap(arr[j], arr[i - 1]);
-   }
-  }
- }
-cout << "Converted array: " << "[ ";
- for (int i = 0; i < size2; i++)
- {
-  cout << arr[i] << " ";
- };
-cout << " ]";
-
-    delete[] arr;
-    return(0);
+    cout << "]" << endl;
+    delete[] array;
+    return 0;
 }
-
