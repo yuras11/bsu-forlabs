@@ -22,7 +22,7 @@ void changeYourNumber(char* string, int value, int radix)
 {
     for (int i = 1; i <= value; i++)
     {
-        string[i] = 'A';
+        string[i] = '&';
     }
     for (int j = value; j >=1; j /= radix)
     {
@@ -44,7 +44,7 @@ void changeYourNumber(char* string, int value, int radix)
     cout << "Your number in " << radix << " calculus system: ";
     for (int i = 1; i <= value; i++)
     {
-        if (string[i] != 'A')
+        if (string[i] != '&')
         {
            cout << string[i];
         }
