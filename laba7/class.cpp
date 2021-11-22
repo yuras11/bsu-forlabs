@@ -36,7 +36,7 @@ StudentAfterFirstSession::StudentAfterFirstSession(char* name_1, unsigned int co
     marks[0] = &first_mark;
     marks[1] = &second_mark;
     marks[2] = &third_mark;
-    marks[3] = &third_mark;
+    marks[3] = &forth_mark;
 }
 StudentAfterFirstSession::StudentAfterFirstSession(const StudentAfterFirstSession &copy, const StudentAfterFirstSession &copy1): Student(copy)
 {
