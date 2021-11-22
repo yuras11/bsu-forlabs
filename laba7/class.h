@@ -6,18 +6,20 @@ class Student
 protected:
     int id;
     char* name;
-    unsigned int course;
-    unsigned int number_of_group;
-    unsigned int number_of_credit_card;
+    int course;
+    int number_of_group;
+    int number_of_credit_card;
     static int count;
 public:
     Student(char* name_1, unsigned int course_1, unsigned int number_of_group_1, unsigned int number_of_credit_card_1);
     Student(const Student &copy);
     friend ostream& operator<<(ostream& out, const Student &student);
     int GetID();
-    unsigned int GetCourse();
-    unsigned int GetNumberOfGroup();
-    unsigned int GetNumberOfCreditCard();
+    int GetCourse();
+    int GetNumberOfGroup();
+    int GetNumberOfCreditCard();
+    int **array_of_pointers;
+    virtual double fill_in_the_array();
 };
 class StudentAfterFirstSession: public Student
 {
@@ -33,6 +35,7 @@ public:
     int GetThirdMark();
     int GetForthMark();
     virtual double GetAveragePoint();
+    double fill_in_the_array() override;
 };
 class StudentAfterSecondSession: public StudentAfterFirstSession
 {
@@ -52,5 +55,7 @@ public:
     int GetFifthMark_2();
     double GetAveragePoint() override;
     double GetYearAveragePoint(StudentAfterFirstSession* &s, StudentAfterSecondSession* &s1);
+    double fill_in_the_array() override;
+    double GetAveragePointOfTheArray(Student* &s, StudentAfterFirstSession* &s1, StudentAfterSecondSession* &s2);
 };
 void solution();
