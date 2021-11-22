@@ -4,7 +4,7 @@ Student::Student(char* name_1, unsigned int course_1, unsigned int number_of_gro
     this->id = count;
     count++;
 }
-int Student::count = 1;
+unsigned int Student::count = 1;
 Student::Student(const Student &copy)
 {
     this->id = copy.id;
@@ -13,19 +13,19 @@ Student::Student(const Student &copy)
     this->number_of_group = copy.number_of_group;
     this->number_of_credit_card = copy.number_of_credit_card;
 }
-int Student::GetID()
+unsigned int Student::GetID()
 {
     return id;
 }
-int Student::GetCourse()
+unsigned int Student::GetCourse()
 {
     return course;
 }
-int Student::GetNumberOfGroup()
+unsigned int Student::GetNumberOfGroup()
 {
     return number_of_group;
 }
-int Student::GetNumberOfCreditCard()
+unsigned int Student::GetNumberOfCreditCard()
 {
     return number_of_credit_card;
 }
@@ -43,7 +43,8 @@ double Student::fill_in_the_array()
     return average_point;
 }
 StudentAfterFirstSession::StudentAfterFirstSession(char* name_1, unsigned int course_1, unsigned int number_of_group_1,
-                                                   unsigned int number_of_credit_card_1, int first_mark, int second_mark, int third_mark, int forth_mark):
+                                                   unsigned int number_of_credit_card_1, unsigned int first_mark, unsigned int second_mark,
+                                                   unsigned int third_mark, unsigned int forth_mark):
         Student(name_1, course_1, number_of_group_1, number_of_credit_card_1)
         {
     marks[0] = &first_mark;
@@ -58,19 +59,19 @@ StudentAfterFirstSession::StudentAfterFirstSession(const StudentAfterFirstSessio
     this->marks[2] = copy1.marks[2];
     this->marks[3] = copy1.marks[3];
 }
-int StudentAfterFirstSession::GetFirstMark()
+unsigned int StudentAfterFirstSession::GetFirstMark()
 {
     return *marks[0];
 }
-int StudentAfterFirstSession::GetSecondMark()
+unsigned int StudentAfterFirstSession::GetSecondMark()
 {
     return *marks[1];
 }
-int StudentAfterFirstSession::GetThirdMark()
+unsigned int StudentAfterFirstSession::GetThirdMark()
 {
     return *marks[2];
 }
-int StudentAfterFirstSession::GetForthMark()
+unsigned int StudentAfterFirstSession::GetForthMark()
 {
     return *marks[3];
 }
@@ -94,9 +95,10 @@ double StudentAfterFirstSession::fill_in_the_array()
 }
 StudentAfterSecondSession::StudentAfterSecondSession(char *name_1, unsigned int course_1,
                                                      unsigned int number_of_group_1,
-                                                     unsigned int number_of_credit_card_1, int first_mark,
-                                                     int second_mark, int third_mark, int forth_mark,
-                                                     int first_mark_2, int second_mark_2, int third_mark_2, int forth_mark_2, int fifth_mark_2):
+                                                     unsigned int number_of_credit_card_1, unsigned int first_mark,
+                                                     unsigned int second_mark, unsigned int third_mark, unsigned int forth_mark,
+                                                     unsigned int first_mark_2, unsigned int second_mark_2, unsigned int third_mark_2,
+                                                     unsigned int forth_mark_2, unsigned int fifth_mark_2):
         StudentAfterFirstSession(name_1, course_1, number_of_group_1, number_of_credit_card_1, first_mark, second_mark,
                                  third_mark, forth_mark){
     marks_2[0] = &first_mark_2;
@@ -115,23 +117,23 @@ StudentAfterSecondSession::StudentAfterSecondSession(const StudentAfterFirstSess
     this->marks_2[3] = copy2.marks_2[3];
     this->marks_2[4] = copy2.marks_2[4];
 }
-int StudentAfterSecondSession::GetFirstMark_2()
+unsigned int StudentAfterSecondSession::GetFirstMark_2()
 {
     return *marks_2[0];
 }
-int StudentAfterSecondSession::GetSecondMark_2()
+unsigned int StudentAfterSecondSession::GetSecondMark_2()
 {
     return *marks_2[1];
 }
-int StudentAfterSecondSession::GetThirdMark_2()
+unsigned int StudentAfterSecondSession::GetThirdMark_2()
 {
     return *marks_2[2];
 }
-int StudentAfterSecondSession::GetForthMark_2()
+unsigned int StudentAfterSecondSession::GetForthMark_2()
 {
     return *marks_2[3];
 }
-int StudentAfterSecondSession::GetFifthMark_2()
+unsigned int StudentAfterSecondSession::GetFifthMark_2()
 {
     return *marks_2[4];
 }
@@ -211,7 +213,7 @@ void solution()
     StudentAfterFirstSession neYuriy_after_first_session("neYuriy", 1, 4, 6567343, 5, 7, 8, 9);
     cout << endl;
     cout << neYuriy_after_first_session;
-    StudentAfterSecondSession neYuriy_after_second_session("neYuriy", 1, 4, 6567343, 7, 5, 4, 8, 9, 8, 7, 10, 10);
+    StudentAfterSecondSession neYuriy_after_second_session("neYuriy", 1, 4, 6567343, 5, 7, 8, 9, 9, 8, 7, 10, 10);
     cout << endl;
     cout << neYuriy_after_second_session;
     cout << endl;
