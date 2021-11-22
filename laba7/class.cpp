@@ -17,17 +17,30 @@ int Student::GetID()
 {
     return id;
 }
-unsigned int Student::GetCourse()
+int Student::GetCourse()
 {
     return course;
 }
-unsigned int Student::GetNumberOfGroup()
+int Student::GetNumberOfGroup()
 {
     return number_of_group;
 }
-unsigned int Student::GetNumberOfCreditCard()
+int Student::GetNumberOfCreditCard()
 {
     return number_of_credit_card;
+}
+double Student::fill_in_the_array()
+{
+    array_of_pointers[0] = &id;
+    array_of_pointers[1] = &number_of_group;
+    array_of_pointers[2] = &number_of_group;
+    array_of_pointers[3] = &number_of_credit_card;
+    double average_point = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        average_point += *array_of_pointers[i];
+    }
+    return average_point;
 }
 StudentAfterFirstSession::StudentAfterFirstSession(char* name_1, unsigned int course_1, unsigned int number_of_group_1,
                                                    unsigned int number_of_credit_card_1, int first_mark, int second_mark, int third_mark, int forth_mark):
@@ -64,6 +77,19 @@ int StudentAfterFirstSession::GetForthMark()
 double StudentAfterFirstSession::GetAveragePoint()
 {
     double average_point = static_cast<double>(*marks[0] + *marks[1] + *marks[2] + *marks[3])/4;
+    return average_point;
+}
+double StudentAfterFirstSession::fill_in_the_array()
+{
+    array_of_pointers[4] = marks[0];
+    array_of_pointers[5] = marks[1];
+    array_of_pointers[6] = marks[2];
+    array_of_pointers[7] = marks[3];
+    double average_point = 0;
+    for (int i = 4; i < 8; i++)
+    {
+        average_point += *array_of_pointers[i];
+    }
     return average_point;
 }
 StudentAfterSecondSession::StudentAfterSecondSession(char *name_1, unsigned int course_1,
@@ -114,12 +140,28 @@ double StudentAfterSecondSession::GetAveragePoint()
     double average_point = static_cast<double>(*marks_2[0] + *marks_2[1] + *marks_2[2] + *marks_2[3] + *marks_2[4])/5;
     return average_point;
 }
-
+double StudentAfterSecondSession::fill_in_the_array()
+{
+    array_of_pointers[8] = marks_2[0];
+    array_of_pointers[9] = marks_2[1];
+    array_of_pointers[10] = marks_2[2];
+    array_of_pointers[11] = marks_2[3];
+    array_of_pointers[12] = marks_2[4];
+    double average_point = 0;
+    for (int i = 8; i < 13; i++)
+    {
+        average_point += *array_of_pointers[i];
+    }
+    return average_point;
+}
 double StudentAfterSecondSession::GetYearAveragePoint(StudentAfterFirstSession* &s, StudentAfterSecondSession* & s1)
 {
     return (s->GetAveragePoint() + s1->GetAveragePoint())/2;
 }
-
+double StudentAfterSecondSession::GetAveragePointOfTheArray(Student* &s, StudentAfterFirstSession* &s1, StudentAfterSecondSession* &s2)
+{
+    return (s->fill_in_the_array() + s1->fill_in_the_array() + s2->fill_in_the_array());
+}
 ostream& operator<<(ostream& out, const Student &student)
 {
     out << "ID:" << "  " << student.id << endl;
@@ -166,10 +208,11 @@ void solution()
     Student neYuriy("neYuriy", 1, 4, 6567343);
     cout << endl;
     cout << neYuriy;
-    StudentAfterFirstSession neYuriy_after_first_session("neYuriy", 1, 4, 6567343, 6, 5, 4, 8);
+    StudentAfterFirstSession neYuriy_after_first_session("neYuriy", 1, 4, 6567343, 5, 7, 8, 9);
     cout << endl;
     cout << neYuriy_after_first_session;
-    StudentAfterSecondSession neYuriy_after_second_session("neYuriy", 1, 4, 6567343, 6, 5, 4, 8, 7, 8, 5, 9, 10);
+    StudentAfterSecondSession neYuriy_after_second_session("neYuriy", 1, 4, 6567343, 7, 5, 4, 8, 9, 8, 7, 10, 10);
     cout << endl;
     cout << neYuriy_after_second_session;
+    cout << endl;
 }
