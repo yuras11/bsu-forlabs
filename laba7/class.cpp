@@ -17,6 +17,10 @@ unsigned int Student::GetID()
 {
     return id;
 }
+char* Student::GetName()
+{
+    return name;
+}
 unsigned int Student::GetCourse()
 {
     return course;
@@ -29,68 +33,39 @@ unsigned int Student::GetNumberOfCreditCard()
 {
     return number_of_credit_card;
 }
-double Student::fill_in_the_array()
+void Student::SetName(char* name_1)
 {
-    array_of_pointers[0] = &id;
-    array_of_pointers[1] = &course;
-    array_of_pointers[2] = &number_of_group;
-    array_of_pointers[3] = &number_of_credit_card;
-    double average_point = 0;
-    for (int i = 0; i < 4; i++)
-    {
-        average_point += *array_of_pointers[i];
-    }
-    return average_point;
+    name = name_1;
 }
+void Student::SetNumberOfGroup(unsigned int number_of_group_1)
+{
+    number_of_group = number_of_group_1;
+}
+void Student::SetNumberOfCreditCard(unsigned int number_of_credit_card_1)
+{
+    number_of_credit_card = number_of_credit_card_1;
+}
+
 StudentAfterFirstSession::StudentAfterFirstSession(char* name_1, unsigned int course_1, unsigned int number_of_group_1,
                                                    unsigned int number_of_credit_card_1, unsigned int first_mark, unsigned int second_mark,
                                                    unsigned int third_mark, unsigned int forth_mark):
         Student(name_1, course_1, number_of_group_1, number_of_credit_card_1)
         {
-    marks[0] = &first_mark;
-    marks[1] = &second_mark;
-    marks[2] = &third_mark;
-    marks[3] = &forth_mark;
+    marks[0] = first_mark;
+    marks[1] = second_mark;
+    marks[2] = third_mark;
+    marks[3] = forth_mark;
 }
-StudentAfterFirstSession::StudentAfterFirstSession(const StudentAfterFirstSession &copy, const StudentAfterFirstSession &copy1): Student(copy)
+StudentAfterFirstSession::StudentAfterFirstSession(const Student &copy, const StudentAfterFirstSession &copy1): Student(copy)
 {
     this->marks[0] = copy1.marks[0];
     this->marks[1] = copy1.marks[1];
     this->marks[2] = copy1.marks[2];
     this->marks[3] = copy1.marks[3];
 }
-unsigned int StudentAfterFirstSession::GetFirstMark()
-{
-    return *marks[0];
-}
-unsigned int StudentAfterFirstSession::GetSecondMark()
-{
-    return *marks[1];
-}
-unsigned int StudentAfterFirstSession::GetThirdMark()
-{
-    return *marks[2];
-}
-unsigned int StudentAfterFirstSession::GetForthMark()
-{
-    return *marks[3];
-}
 double StudentAfterFirstSession::GetAveragePoint()
 {
-    double average_point = static_cast<double>(*marks[0] + *marks[1] + *marks[2] + *marks[3])/4;
-    return average_point;
-}
-double StudentAfterFirstSession::fill_in_the_array()
-{
-    array_of_pointers[4] = marks[0];
-    array_of_pointers[5] = marks[1];
-    array_of_pointers[6] = marks[2];
-    array_of_pointers[7] = marks[3];
-    double average_point = 0;
-    for (int i = 4; i < 8; i++)
-    {
-        average_point += *array_of_pointers[i];
-    }
+    double average_point = static_cast<double>(marks[0] + marks[1] + marks[2] + marks[3])/4;
     return average_point;
 }
 StudentAfterSecondSession::StudentAfterSecondSession(char *name_1, unsigned int course_1,
@@ -101,14 +76,14 @@ StudentAfterSecondSession::StudentAfterSecondSession(char *name_1, unsigned int 
                                                      unsigned int forth_mark_2, unsigned int fifth_mark_2):
         StudentAfterFirstSession(name_1, course_1, number_of_group_1, number_of_credit_card_1, first_mark, second_mark,
                                  third_mark, forth_mark){
-    marks_2[0] = &first_mark_2;
-    marks_2[1] = &second_mark_2;
-    marks_2[2] = &third_mark_2;
-    marks_2[3] = &forth_mark_2;
-    marks_2[4] = &fifth_mark_2;
+    marks_2[0] = first_mark_2;
+    marks_2[1] = second_mark_2;
+    marks_2[2] = third_mark_2;
+    marks_2[3] = forth_mark_2;
+    marks_2[4] = fifth_mark_2;
 }
 
-StudentAfterSecondSession::StudentAfterSecondSession(const StudentAfterFirstSession &copy, const StudentAfterFirstSession &copy1,
+StudentAfterSecondSession::StudentAfterSecondSession(const Student &copy, const StudentAfterFirstSession &copy1,
                                                      const StudentAfterSecondSession &copy2): StudentAfterFirstSession(copy1)
 {
     this->marks_2[0] = copy2.marks_2[0];
@@ -117,52 +92,11 @@ StudentAfterSecondSession::StudentAfterSecondSession(const StudentAfterFirstSess
     this->marks_2[3] = copy2.marks_2[3];
     this->marks_2[4] = copy2.marks_2[4];
 }
-unsigned int StudentAfterSecondSession::GetFirstMark_2()
-{
-    return *marks_2[0];
-}
-unsigned int StudentAfterSecondSession::GetSecondMark_2()
-{
-    return *marks_2[1];
-}
-unsigned int StudentAfterSecondSession::GetThirdMark_2()
-{
-    return *marks_2[2];
-}
-unsigned int StudentAfterSecondSession::GetForthMark_2()
-{
-    return *marks_2[3];
-}
-unsigned int StudentAfterSecondSession::GetFifthMark_2()
-{
-    return *marks_2[4];
-}
 double StudentAfterSecondSession::GetAveragePoint()
 {
-    double average_point = static_cast<double>(*marks_2[0] + *marks_2[1] + *marks_2[2] + *marks_2[3] + *marks_2[4])/5;
+    double average_point = static_cast<double>(marks[0] + marks[1] + marks[2] + marks[3] +
+            marks_2[0] + marks_2[1] + marks_2[2] + marks_2[3] + marks_2[4])/9;
     return average_point;
-}
-double StudentAfterSecondSession::fill_in_the_array()
-{
-    array_of_pointers[8] = marks_2[0];
-    array_of_pointers[9] = marks_2[1];
-    array_of_pointers[10] = marks_2[2];
-    array_of_pointers[11] = marks_2[3];
-    array_of_pointers[12] = marks_2[4];
-    double average_point = 0;
-    for (int i = 8; i < 13; i++)
-    {
-        average_point += *array_of_pointers[i];
-    }
-    return average_point;
-}
-double StudentAfterSecondSession::GetYearAveragePoint(StudentAfterFirstSession* &s, StudentAfterSecondSession* & s1)
-{
-    return (s->GetAveragePoint() + s1->GetAveragePoint())/2;
-}
-double StudentAfterSecondSession::GetAveragePointOfTheArray(Student* &s, StudentAfterFirstSession* &s1, StudentAfterSecondSession* &s2)
-{
-    return (s->fill_in_the_array() + s1->fill_in_the_array() + s2->fill_in_the_array());
 }
 ostream& operator<<(ostream& out, const Student &student)
 {
@@ -174,37 +108,30 @@ ostream& operator<<(ostream& out, const Student &student)
 }
 ostream& operator<<(ostream& out, const StudentAfterFirstSession &studentAfterFirstSession)
 {
-    out << "The marks after the first session:" << endl;
-    out << "Programming:" << "  " << *studentAfterFirstSession.marks[0] << endl;
-    out << "Geometry:" << "  " << *studentAfterFirstSession.marks[1] << endl;
-    out << "Algebra:" << "  " << *studentAfterFirstSession.marks[2] << endl;
-    out << "Maths analysis:" << "  " << *studentAfterFirstSession.marks[3] << endl;
-    double average_point = static_cast<double>(*studentAfterFirstSession.marks[0] + *studentAfterFirstSession.marks[1] +
-                                               *studentAfterFirstSession.marks[2] + *studentAfterFirstSession.marks[3])/4;
-    out << "Average point is:" << "  " << average_point << endl;
+    out << studentAfterFirstSession.name << "\'s marks after the first session:" << endl;
+    out << "Programming:" << "  " << studentAfterFirstSession.marks[0] << endl;
+    out << "Geometry:" << "  " << studentAfterFirstSession.marks[1] << endl;
+    out << "Algebra:" << "  " << studentAfterFirstSession.marks[2] << endl;
+    out << "Maths analysis:" << "  " << studentAfterFirstSession.marks[3] << endl;
 }
 ostream& operator<<(ostream& out, const StudentAfterSecondSession &studentAfterSecondSession)
 {
-    out << "The marks after the second session:" << endl;
-    out << "Programming:" << "  " << *studentAfterSecondSession.marks_2[0] << endl;
-    out << "Geometry:" << "  " << *studentAfterSecondSession.marks_2[1] << endl;
-    out << "Algebra:" << "  " << *studentAfterSecondSession.marks_2[2] << endl;
-    out << "Maths analysis:" << "  " << *studentAfterSecondSession.marks_2[3] << endl;
-    out << "Maths logic:" << "  " << *studentAfterSecondSession.marks_2[4] << endl;
-    double average_point = static_cast<double>(*studentAfterSecondSession.marks_2[0] + *studentAfterSecondSession.marks_2[1] +
-                                               *studentAfterSecondSession.marks_2[2] + *studentAfterSecondSession.marks_2[3] +
-                                               *studentAfterSecondSession.marks_2[4])/5;
-    out << "Average point is:" << "  " << average_point << endl;
+    out << studentAfterSecondSession.name << "\'s marks after the second session:" << endl;
+    out << "Programming:" << "  " << studentAfterSecondSession.marks_2[0] << endl;
+    out << "Geometry:" << "  " << studentAfterSecondSession.marks_2[1] << endl;
+    out << "Algebra:" << "  " << studentAfterSecondSession.marks_2[2] << endl;
+    out << "Maths analysis:" << "  " << studentAfterSecondSession.marks_2[3] << endl;
+    out << "Maths logic:" << "  " << studentAfterSecondSession.marks_2[4] << endl;
 }
 void solution()
 {
-    Student yuriy("Yuriy", 1, 4, 6743647);
+    Student yuriy("Yuriy", 1, 4, 5638438);
     cout << endl;
     cout << yuriy;
-    StudentAfterFirstSession yuriy_after_first_session("Yuriy", 1, 4, 6743647, 10, 10, 10, 10);
+    StudentAfterFirstSession yuriy_after_first_session("Yuriy", 1, 4, 5638438, 10, 10, 10, 10);
     cout << endl;
     cout << yuriy_after_first_session;
-    StudentAfterSecondSession yuriy_after_second_session("Yuriy", 1, 4, 6743647, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+    StudentAfterSecondSession yuriy_after_second_session("Yuriy", 1, 8, 5638438, 10, 10, 10, 10, 10, 10, 10, 10, 10);
     cout << endl;
     cout << yuriy_after_second_session;
     Student neYuriy("neYuriy", 1, 4, 6567343);
@@ -217,4 +144,28 @@ void solution()
     cout << endl;
     cout << neYuriy_after_second_session;
     cout << endl;
+    Student zhora("Zhora", 1, 4, 2587295);
+    cout << endl;
+    cout << zhora;
+    StudentAfterFirstSession zhora_after_first_session("Zhora", 1, 4, 2587295, 9, 10, 9, 10);
+    cout << endl;
+    cout << zhora_after_first_session;
+    StudentAfterSecondSession zhora_after_second_session("Zhora", 1, 4, 2587295, 9, 10, 9, 10, 9, 10, 10, 10, 10);
+    cout << endl;
+    cout << zhora_after_second_session;
+    cout << endl;
+    cout << "The average point in a group after the first session is:" << endl;
+    cout << fixed << setprecision(1) << (yuriy_after_first_session.GetAveragePoint() + neYuriy_after_first_session.GetAveragePoint() + zhora_after_first_session.GetAveragePoint())/3 << endl;
+    cout << "The average point in a group after the second session is :" << endl;
+    cout << fixed << setprecision(1) << (yuriy_after_second_session.GetAveragePoint() + neYuriy_after_second_session.GetAveragePoint() + zhora_after_second_session.GetAveragePoint())/3 << endl;
+    Student* array[9];
+    array[0] = &yuriy;
+    array[1] = &yuriy_after_first_session;
+    array[2] = &yuriy_after_second_session;
+    array[3] = &neYuriy;
+    array[4] = &neYuriy_after_first_session;
+    array[5] = &neYuriy_after_second_session;
+    array[6] = &zhora;
+    array[7] = &zhora_after_first_session;
+    array[8] = &zhora_after_second_session;
 }
