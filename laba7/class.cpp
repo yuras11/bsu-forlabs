@@ -32,7 +32,7 @@ unsigned int Student::GetNumberOfCreditCard()
 double Student::fill_in_the_array()
 {
     array_of_pointers[0] = &id;
-    array_of_pointers[1] = &number_of_group;
+    array_of_pointers[1] = &course;
     array_of_pointers[2] = &number_of_group;
     array_of_pointers[3] = &number_of_credit_card;
     double average_point = 0;
