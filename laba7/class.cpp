@@ -201,10 +201,10 @@ void solution()
     Student yuriy("Yuriy", 1, 4, 6743647);
     cout << endl;
     cout << yuriy;
-    StudentAfterFirstSession yuriy_after_first_session("Yuriy", 1, 4, 1000, 10, 10, 10, 10);
+    StudentAfterFirstSession yuriy_after_first_session("Yuriy", 1, 4, 6743647, 10, 10, 10, 10);
     cout << endl;
     cout << yuriy_after_first_session;
-    StudentAfterSecondSession yuriy_after_second_session("Yuriy", 1, 8, 76767, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+    StudentAfterSecondSession yuriy_after_second_session("Yuriy", 1, 4, 6743647, 10, 10, 10, 10, 10, 10, 10, 10, 10);
     cout << endl;
     cout << yuriy_after_second_session;
     Student neYuriy("neYuriy", 1, 4, 6567343);
