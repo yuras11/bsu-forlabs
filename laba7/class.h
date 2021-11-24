@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <iomanip>
+#include <vector>
 using namespace std;
 class Student
 {
@@ -23,6 +24,7 @@ public:
     void SetName(char* name_1);
     void SetNumberOfGroup(unsigned int number_of_group_1);
     void SetNumberOfCreditCard(unsigned int number_of_credit_card_1);
+    virtual double GetAveragePoint();
 };
 class StudentAfterFirstSession: public Student
 {
@@ -33,7 +35,9 @@ public:
                              unsigned int first_mark, unsigned int second_mark, unsigned int third_mark, unsigned int forth_mark);
     StudentAfterFirstSession(const Student &copy, const StudentAfterFirstSession &copy1);
     friend ostream& operator<<(ostream& out, const StudentAfterFirstSession &studentAfterFirstSession);
-    virtual double GetAveragePoint();
+    double GetAveragePoint() override;
+    virtual unsigned int GetMarks(int number_of_subject);
+    virtual void SetMarks(int number_of_subject, int mark);
 };
 class StudentAfterSecondSession: public StudentAfterFirstSession
 {
@@ -47,5 +51,9 @@ public:
                               const StudentAfterSecondSession &copy2);
     friend ostream& operator<<(ostream& out, const StudentAfterSecondSession &studentAfterSecondSession);
     double GetAveragePoint() override;
+    unsigned int GetMarks(int number_of_subject) override;
+    void SetMarks(int number_of_subject, int mark) override;
 };
+double GroupsAveragePoint(int group, const vector<Student*> &students);
+double TotalAveragePoint(const vector<Student*> &students);
 void solution();
