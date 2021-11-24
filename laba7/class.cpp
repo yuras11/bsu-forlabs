@@ -45,12 +45,15 @@ void Student::SetNumberOfCreditCard(unsigned int number_of_credit_card_1)
 {
     number_of_credit_card = number_of_credit_card_1;
 }
-
+double Student::GetAveragePoint()
+{
+    return 0;
+}
 StudentAfterFirstSession::StudentAfterFirstSession(char* name_1, unsigned int course_1, unsigned int number_of_group_1,
                                                    unsigned int number_of_credit_card_1, unsigned int first_mark, unsigned int second_mark,
                                                    unsigned int third_mark, unsigned int forth_mark):
         Student(name_1, course_1, number_of_group_1, number_of_credit_card_1)
-        {
+{
     marks[0] = first_mark;
     marks[1] = second_mark;
     marks[2] = third_mark;
@@ -67,6 +70,14 @@ double StudentAfterFirstSession::GetAveragePoint()
 {
     double average_point = static_cast<double>(marks[0] + marks[1] + marks[2] + marks[3])/4;
     return average_point;
+}
+unsigned int StudentAfterFirstSession::GetMarks(int number_of_subject)
+{
+    return marks[--number_of_subject];
+}
+void StudentAfterFirstSession::SetMarks(int number_of_subject, int mark)
+{
+    marks[--number_of_subject] = mark;
 }
 StudentAfterSecondSession::StudentAfterSecondSession(char *name_1, unsigned int course_1,
                                                      unsigned int number_of_group_1,
@@ -92,10 +103,18 @@ StudentAfterSecondSession::StudentAfterSecondSession(const Student &copy, const 
     this->marks_2[3] = copy2.marks_2[3];
     this->marks_2[4] = copy2.marks_2[4];
 }
+unsigned int StudentAfterSecondSession::GetMarks(int number_of_subject)
+{
+    return marks_2[--number_of_subject];
+}
+void StudentAfterSecondSession::SetMarks(int number_of_subject, int mark)
+{
+    marks_2[--number_of_subject] = mark;
+}
 double StudentAfterSecondSession::GetAveragePoint()
 {
     double average_point = static_cast<double>(marks[0] + marks[1] + marks[2] + marks[3] +
-            marks_2[0] + marks_2[1] + marks_2[2] + marks_2[3] + marks_2[4])/9;
+                                               marks_2[0] + marks_2[1] + marks_2[2] + marks_2[3] + marks_2[4])/9;
     return average_point;
 }
 ostream& operator<<(ostream& out, const Student &student)
@@ -123,49 +142,74 @@ ostream& operator<<(ostream& out, const StudentAfterSecondSession &studentAfterS
     out << "Maths analysis:" << "  " << studentAfterSecondSession.marks_2[3] << endl;
     out << "Maths logic:" << "  " << studentAfterSecondSession.marks_2[4] << endl;
 }
+double GroupsAveragePoint(int group, const vector<Student*> &array)
+{
+    double sum = 0;
+    int member_count = 0;
+    for (int i = 0; i < array.size(); i++)
+    {
+        if (array[i]->GetNumberOfGroup() == group)
+        {
+            sum += array[i]->GetAveragePoint();
+            member_count++;
+        }
+    }
+    double average_point = sum/member_count;
+    return average_point;
+}
+double TotalAveragePoint(const vector<Student*> &array)
+{
+    double sum = 0;
+    for (int i = 0; i < array.size(); i++)
+    {
+        if (array[i]->GetNumberOfGroup() == 4)
+        {
+            sum += array[i]->GetAveragePoint();
+        }
+    }
+    double average_point = sum/ array.size();
+    return average_point;
+}
 void solution()
 {
     Student yuriy("Yuriy", 1, 4, 5638438);
     cout << endl;
     cout << yuriy;
+    Student neYuriy("neYuriy", 1, 5, 6567343);
+    cout << endl;
+    cout << neYuriy;
+    Student zhora("Zhora", 1, 8, 2587295);
+    cout << endl;
+    cout << zhora;
     StudentAfterFirstSession yuriy_after_first_session("Yuriy", 1, 4, 5638438, 10, 10, 10, 10);
     cout << endl;
     cout << yuriy_after_first_session;
-    StudentAfterSecondSession yuriy_after_second_session("Yuriy", 1, 8, 5638438, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-    cout << endl;
-    cout << yuriy_after_second_session;
-    Student neYuriy("neYuriy", 1, 4, 6567343);
-    cout << endl;
-    cout << neYuriy;
-    StudentAfterFirstSession neYuriy_after_first_session("neYuriy", 1, 4, 6567343, 5, 7, 8, 9);
+    StudentAfterFirstSession neYuriy_after_first_session("neYuriy", 1, 5, 6567343, 5, 7, 8, 9);
     cout << endl;
     cout << neYuriy_after_first_session;
-    StudentAfterSecondSession neYuriy_after_second_session("neYuriy", 1, 4, 6567343, 5, 7, 8, 9, 9, 8, 7, 10, 10);
-    cout << endl;
-    cout << neYuriy_after_second_session;
-    cout << endl;
-    Student zhora("Zhora", 1, 4, 2587295);
-    cout << endl;
-    cout << zhora;
-    StudentAfterFirstSession zhora_after_first_session("Zhora", 1, 4, 2587295, 9, 10, 9, 10);
+    StudentAfterFirstSession zhora_after_first_session("Zhora", 1, 8, 2587295, 9, 10, 9, 10);
     cout << endl;
     cout << zhora_after_first_session;
-    StudentAfterSecondSession zhora_after_second_session("Zhora", 1, 4, 2587295, 9, 10, 9, 10, 9, 10, 10, 10, 10);
+    StudentAfterSecondSession yuriy_after_second_session("Yuriy", 1, 4, 5638438, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+    cout << endl;
+    cout << yuriy_after_second_session;
+    StudentAfterSecondSession neYuriy_after_second_session("neYuriy", 1, 5, 6567343, 5, 7, 8, 9, 9, 8, 7, 10, 10);
+    cout << endl;
+    cout << neYuriy_after_second_session;
+    StudentAfterSecondSession zhora_after_second_session("Zhora", 1, 8, 2587295, 9, 10, 9, 10, 9, 10, 10, 10, 10);
     cout << endl;
     cout << zhora_after_second_session;
     cout << endl;
-    cout << "The average point in a group after the first session is:" << endl;
-    cout << fixed << setprecision(1) << (yuriy_after_first_session.GetAveragePoint() + neYuriy_after_first_session.GetAveragePoint() + zhora_after_first_session.GetAveragePoint())/3 << endl;
-    cout << "The average point in a group after the second session is :" << endl;
-    cout << fixed << setprecision(1) << (yuriy_after_second_session.GetAveragePoint() + neYuriy_after_second_session.GetAveragePoint() + zhora_after_second_session.GetAveragePoint())/3 << endl;
-    Student* array[9];
-    array[0] = &yuriy;
-    array[1] = &yuriy_after_first_session;
-    array[2] = &yuriy_after_second_session;
-    array[3] = &neYuriy;
-    array[4] = &neYuriy_after_first_session;
-    array[5] = &neYuriy_after_second_session;
-    array[6] = &zhora;
-    array[7] = &zhora_after_first_session;
-    array[8] = &zhora_after_second_session;
+    vector<Student*> array;
+    array.push_back(&neYuriy_after_first_session);
+    array.push_back(&neYuriy_after_second_session);
+    array.push_back(&yuriy_after_first_session);
+    array.push_back(&yuriy_after_second_session);
+    array.push_back(&zhora_after_first_session);
+    array.push_back(&zhora_after_second_session);
+    cout << yuriy.GetNumberOfGroup() << " group's average point: " << endl;
+    cout << fixed << setprecision(1) << GroupsAveragePoint(5, array) << endl;
+    cout << endl;
+    cout << "Total average point: " << endl;
+    cout << TotalAveragePoint(array) << endl;
 }
