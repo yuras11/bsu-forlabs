@@ -162,12 +162,9 @@ double TotalAveragePoint(const vector<Student*> &array)
     double sum = 0;
     for (int i = 0; i < array.size(); i++)
     {
-        if (array[i]->GetNumberOfGroup() == 4)
-        {
-            sum += array[i]->GetAveragePoint();
-        }
+        sum += array[i]->GetAveragePoint();
     }
-    double average_point = sum/ array.size();
+    double average_point = sum/array.size();
     return average_point;
 }
 void solution()
@@ -201,15 +198,18 @@ void solution()
     cout << zhora_after_second_session;
     cout << endl;
     vector<Student*> array;
-    array.push_back(&neYuriy_after_first_session);
-    array.push_back(&neYuriy_after_second_session);
+    array.push_back(&yuriy);
+    array.push_back(&neYuriy);
+    array.push_back(&zhora);
     array.push_back(&yuriy_after_first_session);
-    array.push_back(&yuriy_after_second_session);
+    array.push_back(&neYuriy_after_first_session);
     array.push_back(&zhora_after_first_session);
+    array.push_back(&yuriy_after_second_session);
+    array.push_back(&neYuriy_after_second_session);
     array.push_back(&zhora_after_second_session);
-    cout << yuriy.GetNumberOfGroup() << " group's average point: " << endl;
-    cout << fixed << setprecision(1) << GroupsAveragePoint(5, array) << endl;
+    cout << "Group's average point: " << endl;
+    cout << fixed << setprecision(1) << GroupsAveragePoint(4, array) << endl;
     cout << endl;
-    cout << "Total average point: " << endl;
+    cout << "Total array's average point: " << endl;
     cout << TotalAveragePoint(array) << endl;
 }
