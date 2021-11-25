@@ -54,6 +54,7 @@ public:
     unsigned int GetMarks(int number_of_subject) override;
     void SetMarks(int number_of_subject, int mark) override;
 };
-double GroupsAveragePoint(int group, const vector<Student*> &students);
-double TotalAveragePoint(const vector<Student*> &students);
+double GroupsAveragePointAfterFirstSession(int group, const vector<StudentAfterFirstSession*> &array_first_session);
+double GroupsAveragePointAfterSecondSession(int group, const vector<StudentAfterSecondSession*> &array_second_session);
+double TotalAveragePoint(const vector<Student*> &array);
 void solution();
