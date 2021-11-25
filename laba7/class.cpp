@@ -69,7 +69,15 @@ StudentAfterFirstSession::StudentAfterFirstSession(const Student &copy, const St
 double StudentAfterFirstSession::GetAveragePoint()
 {
     double average_point = static_cast<double>(marks[0] + marks[1] + marks[2] + marks[3])/4;
-    return average_point;
+    double first_number_after_comma = static_cast<int>((average_point - (static_cast<int>(average_point)))*10); // first number after comma
+    double number_2 = static_cast<int>((average_point - (static_cast<int>(average_point)))*100);
+    double second_number_after_comma = number_2 - 10*first_number_after_comma;
+    if (second_number_after_comma >= 5)
+    {
+        first_number_after_comma++;
+    }
+    double result = static_cast<int>(average_point) + (first_number_after_comma/10);
+    return result;
 }
 unsigned int StudentAfterFirstSession::GetMarks(int number_of_subject)
 {
@@ -115,7 +123,15 @@ double StudentAfterSecondSession::GetAveragePoint()
 {
     double average_point = static_cast<double>(marks[0] + marks[1] + marks[2] + marks[3] +
                                                marks_2[0] + marks_2[1] + marks_2[2] + marks_2[3] + marks_2[4])/9;
-    return average_point;
+    double first_number_after_comma = static_cast<int>((average_point - (static_cast<int>(average_point)))*10);
+    double number_2 = static_cast<int>((average_point - (static_cast<int>(average_point)))*100);
+    double second_number_after_comma = number_2 - 10*first_number_after_comma;
+    if (second_number_after_comma >= 5)
+    {
+        first_number_after_comma++;
+    }
+    double result = static_cast<int>(average_point) + (first_number_after_comma/10);
+    return result;
 }
 ostream& operator<<(ostream& out, const Student &student)
 {
@@ -142,20 +158,51 @@ ostream& operator<<(ostream& out, const StudentAfterSecondSession &studentAfterS
     out << "Maths analysis:" << "  " << studentAfterSecondSession.marks_2[3] << endl;
     out << "Maths logic:" << "  " << studentAfterSecondSession.marks_2[4] << endl;
 }
-double GroupsAveragePoint(int group, const vector<Student*> &array)
+double GroupsAveragePointAfterFirstSession(int group, const vector<StudentAfterFirstSession*> &array_first_session)
 {
     double sum = 0;
     int member_count = 0;
-    for (int i = 0; i < array.size(); i++)
+    for (int i = 0; i < array_first_session.size(); i++)
     {
-        if (array[i]->GetNumberOfGroup() == group)
+        if (array_first_session[i]->GetNumberOfGroup() == group)
         {
-            sum += array[i]->GetAveragePoint();
+            sum += array_first_session[i]->GetAveragePoint();
             member_count++;
         }
     }
     double average_point = sum/member_count;
-    return average_point;
+    double first_number_after_comma = static_cast<int>((average_point - (static_cast<int>(average_point)))*10); // first number after comma
+    double number_2 = static_cast<int>((average_point - (static_cast<int>(average_point)))*100);
+    double second_number_after_comma = number_2 - 10*first_number_after_comma;
+    if (second_number_after_comma >= 5)
+    {
+        first_number_after_comma++;
+    }
+    double result = static_cast<int>(average_point) + (first_number_after_comma/10);
+    return result;
+}
+double GroupsAveragePointAfterSecondSession(int group, const vector<StudentAfterSecondSession*> &array_second_session)
+{
+    double sum = 0;
+    int member_count = 0;
+    for (int i = 0; i < array_second_session.size(); i++)
+    {
+        if (array_second_session[i]->GetNumberOfGroup() == group)
+        {
+            sum += array_second_session[i]->GetAveragePoint();
+            member_count++;
+        }
+    }
+    double average_point = sum/member_count;
+    double first_number_after_comma = static_cast<int>((average_point - (static_cast<int>(average_point)))*10); // first number after comma
+    double number_2 = static_cast<int>((average_point - (static_cast<int>(average_point)))*100);
+    double second_number_after_comma = number_2 - 10*first_number_after_comma;
+    if (second_number_after_comma >= 5)
+    {
+        first_number_after_comma++;
+    }
+    double result = static_cast<int>(average_point) + (first_number_after_comma/10);
+    return result;
 }
 double TotalAveragePoint(const vector<Student*> &array)
 {
@@ -165,7 +212,15 @@ double TotalAveragePoint(const vector<Student*> &array)
         sum += array[i]->GetAveragePoint();
     }
     double average_point = sum/array.size();
-    return average_point;
+    double first_number_after_comma = static_cast<int>((average_point - (static_cast<int>(average_point)))*10);
+    double number_2 = static_cast<int>((average_point - (static_cast<int>(average_point)))*100);
+    double second_number_after_comma = number_2 - 10*first_number_after_comma;
+    if (second_number_after_comma >= 5)
+    {
+        first_number_after_comma++;
+    }
+    double result = static_cast<int>(average_point) + (first_number_after_comma/10);
+    return result;
 }
 void solution()
 {
@@ -207,8 +262,19 @@ void solution()
     array.push_back(&yuriy_after_second_session);
     array.push_back(&neYuriy_after_second_session);
     array.push_back(&zhora_after_second_session);
-    cout << "Group's average point: " << endl;
-    cout << fixed << setprecision(1) << GroupsAveragePoint(4, array) << endl;
+    vector<StudentAfterFirstSession*> array_first_session;
+    array_first_session.push_back(&yuriy_after_first_session);
+    array.push_back(&neYuriy_after_first_session);
+    array_first_session.push_back(&zhora_after_first_session);
+    vector<StudentAfterSecondSession*> array_second_session;
+    array_second_session.push_back(&yuriy_after_second_session);
+    array_second_session.push_back(&neYuriy_after_second_session);
+    array_second_session.push_back(&zhora_after_second_session);
+    cout << "Group's average point after first session: " << endl;
+    cout << GroupsAveragePointAfterFirstSession(8, array_first_session) << endl;
+    cout << endl;
+    cout << "Group's average point after second session: " << endl;
+    cout << GroupsAveragePointAfterSecondSession(5,array_second_session) << endl;
     cout << endl;
     cout << "Total array's average point: " << endl;
     cout << TotalAveragePoint(array) << endl;
