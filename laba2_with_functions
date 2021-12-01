@@ -1,0 +1,163 @@
+#include <iostream>
+using namespace std;
+int NumberOfSignChanges(const int* array, int size1)
+{
+    int sign_changes = 0;
+    for (int i = 0; i < size1 - 1; i++)
+    {
+        if (array[i] >= 0 && array[i+1] < 0)
+        {
+            sign_changes++;
+        }
+        if (array[i] < 0 && array[i+1] >= 0)
+        {
+            sign_changes++;
+        }
+    }
+    return sign_changes;
+}
+int ProductOfElementsBetweenFirstAndSecondZero(const int* array, int size1)
+{
+    int first_null = size1 + 1;
+    for (int i = 0; i < size1; i++)
+    {
+        if(array[i] == 0)
+        {
+            first_null = i;
+            break;
+        }
+    }
+    int second_null = size1 + 2;
+    if (first_null != size1 + 1)
+    {
+        for (int j = first_null + 1; j < size1; j++)
+        {
+            if(array[j] == 0)
+            {
+                second_null = j;
+                break;
+            }
+        }
+    }
+    int third_null = size1 + 3;
+    for (int m = size1 - 1; m >= 0; m--)
+    {
+        if(array[m] == 0)
+        {
+            third_null = m;
+            break;
+        }
+    }
+    int product = 1;
+    if (first_null == third_null)
+    {
+        cout << "There is the only null in the array." << endl;
+        return 0;
+    }
+    if(first_null + third_null == 2*size1 + 4)
+    {
+        cout << "There are no nulls in the array." << endl;
+        return 0;
+    }
+    if(first_null != third_null && first_null + third_null != 2*size1 + 4)
+    {
+        for (int k = first_null + 1; k < second_null; k++)
+        {
+            product *= array[k];
+        }
+        cout << "The product of elements between first and second nulls is: " << product << endl;
+        return product;
+    }
+}
+void FillInTheArray(int* array, int size1)
+{
+    cout << "Choose how you want to fill in the array.\n";
+    cout << "o - on your own, r - randomly." << endl;
+    char letter;
+    cin >> letter;
+    if (letter != 'o' && letter != 'r')
+    {
+        cout << "You\'ve entered an invalid symbol, please try again: ";
+        cin >> letter;
+    }
+    if (letter == 'o')
+    {
+        int count = 1;
+        for (int i = 0; i < size1; i++)
+        {
+            cout << "Enter the " << count << " element of the array: " << endl;
+            cin >> array[i];
+            count++;
+        }
+        cout << "Your array:" << endl;
+        cout << "[" << " ";
+        for (int i = 0; i < size1; i++)
+        {
+            cout << array[i] << " ";
+        }
+        cout << "]" << endl;
+    }
+    if (letter == 'r')
+    {
+        int min, max;
+        cout << "Enter the minimum: ";
+        cin >> min;
+        cout << "Enter the maximum: ";
+        cin >> max;
+        if (min > max)
+        {
+            swap(min,max);
+        }
+        double d = 1.0 / ((RAND_MAX) + 1.0);
+        for (int i = 0; i < size1; i++)
+        {
+            array[i] = (rand() * d * (max - min + 1) + min);
+        }
+        cout << "Your array:" << endl;
+        cout << "[" << " ";
+        for (int i = 0; i < size1; i++)
+        {
+            cout << array[i] << " ";
+        }
+        cout << "]" << endl;
+    }
+}
+void ConvertTheArray(int* array, int size1)
+{
+    for (int i = size1-1; i > 0; i--)
+    {
+        for (int j = size1-1; j >= 0; j--)
+        {
+            if(array[j] % 2 == 0 && array[j-1] % 2 != 0)
+            {
+                swap(array[j],array[j-1]);
+            }
+        }
+    }
+    cout << "Converted array: " << endl;
+    cout << "[ ";
+    for (int i = 0; i < size1; i++)
+    {
+        cout << array[i] << " ";
+    }
+    cout << "]" << endl;
+}
+int main()
+{
+    const int size = 15;
+    int size1;
+    cout << "Enter the size of the array: ";
+    cin >> size1;
+    while (size1 > size)
+    {
+        cout << "You\'ve entered a too big number, try again:";
+        cin >> size1;
+    }
+    int* array  = new int[size1];
+    FillInTheArray(array, size1);
+    cout << "The amount of sign changes: " << NumberOfSignChanges(array, size1) << endl;
+    ProductOfElementsBetweenFirstAndSecondZero(array, size1);
+    ConvertTheArray(array, size1);
+    delete[] array;
+    return 0;
+}
