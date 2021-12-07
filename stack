@@ -1,0 +1,107 @@
+#include <iostream>
+template <typename T>
+class Stack{
+private:
+    enum {MAX = INT_MAX};
+    int top_of_stack;
+public:
+    int size;
+    T* st = new T[MAX];
+    Stack():top_of_stack(0), size(0){}
+    T top()
+    {
+        if(!IsEmpty())
+        {
+            throw std::runtime_error("Stack is empty");
+        }
+        return st[top_of_stack];
+    }
+    void push(T data)
+    {
+        ++top_of_stack;
+        st[top_of_stack] = data;
+        ++size;
+    }
+    T pop()
+    {
+        if(!IsEmpty())
+        {
+            throw std::runtime_error("Stack is empty");
+        }
+        T data = st[top_of_stack];
+        --top_of_stack;
+        --size;
+        return data;
+    }
+    bool IsEmpty()
+    {
+        return size;
+    }
+    void print(std::ostream &out)
+    {
+        for(size_t i = top_of_stack; i > 0; i--)
+        {
+            out << st[i] << '\n';
+        }
+    }
+    friend void operator<< (Stack<T> &stack, T data)
+    {
+        stack.push(data);
+    }
+    friend void operator>> (Stack<T> &stack, T data)
+    {
+        stack.pop();
+    }
+    Stack& operator=(const Stack &stack){
+        this->st = stack.st;
+        this->top_of_stack = stack.top_of_stack;
+        this->size = stack.size;
+    }
+    friend bool operator== (const Stack &stack1, const Stack &stack2)
+    {
+        return (stack1.size == stack2.size);
+    }
+    friend bool operator!= (const Stack &stack1, const Stack &stack2)
+    {
+        return !(stack1 == stack2);
+    }
+    friend bool operator< (const Stack &stack1, const Stack &stack2)
+    {
+        return (stack1.size < stack2.size);
+    }
+    friend bool operator<= (const Stack &stack1, const Stack &stack2)
+    {
+        return (stack1.size < stack2.size || stack1 == stack2);
+    }
+    friend bool operator> (const Stack &stack1, const Stack &stack2)
+    {
+        return (stack1.size > stack2.size);
+    }
+    friend bool operator>= (const Stack &stack1, const Stack &stack2)
+    {
+        return (stack1.size > stack2.size || stack1 == stack2);
+    }
+    T& operator[](const int index)
+    {
+        return st[index];
+    };
+};
+int main()
+{
+    Stack<int> st;
+    Stack<int> stack;
+    st << 4;
+    st << 7;
+    st << 8;
+    st << 9;
+    st << 88;
+    st >> 1;
+    st[1] = 56;
+    stack = st;
+    st.print(std::cout);
+    std::cout << std::endl;
+    std::cout << (st == stack) << std::endl;
+    std::cout << (st != stack) << std::endl;
+    std::cout << std::endl;
+    stack.print(std::cout);
+}
