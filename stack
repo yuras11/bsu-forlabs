@@ -8,9 +8,13 @@ public:
     int size;
     T* st = new T[MAX];
     Stack():top_of_stack(0), size(0){}
+    ~Stack()
+    {
+        delete[] st;
+    }
     T top()
     {
-        if(!IsEmpty())
+        if(IsEmpty())
         {
             throw std::runtime_error("Stack is empty");
         }
@@ -24,7 +28,7 @@ public:
     }
     T pop()
     {
-        if(!IsEmpty())
+        if(IsEmpty())
         {
             throw std::runtime_error("Stack is empty");
         }
@@ -35,7 +39,7 @@ public:
     }
     bool IsEmpty()
     {
-        return size;
+        return !size;
     }
     void print(std::ostream &out)
     {
@@ -52,10 +56,15 @@ public:
     {
         stack.pop();
     }
-    Stack& operator=(const Stack &stack){
-        this->st = stack.st;
-        this->top_of_stack = stack.top_of_stack;
+    Stack& operator=(const Stack& stack){
+
         this->size = stack.size;
+        this->top_of_stack = stack.top_of_stack;
+        for (size_t i = 1; i <= size; i++)
+        {
+            st[i] = stack.st[i];
+        }
+        return *this;
     }
     friend bool operator== (const Stack &stack1, const Stack &stack2)
     {
