@@ -15,7 +15,14 @@ double Calculations(double number1, double number2, char operation)
     if (operation == '+') { return number1 + number2; }
     if (operation == '-') { return number1 - number2; }
     if (operation == '*') { return number1 * number2; }
-    if (operation == '/') { return number1 / number2; }
+    if (operation == '/')
+    {
+        if (number2 == 0)
+        {
+            throw runtime_error("Can't divide by 0");
+        }
+        return number1 / number2;
+    }
     if (operation == '^')
     {
         double temp = 1;
@@ -36,7 +43,6 @@ double CalculatingTheExpression(string expression)
             temp += i;
     }
     expression = temp;
-    temp = "";
     Stack<char> operations;
     Stack<double> result;
     for (size_t i = 0; i < expression.size(); ++i)
