@@ -2,70 +2,78 @@
 #include <iostream>
 #include <string>
 using namespace std;
-template<typename T>
-class Stack
-{
+template <typename T>
+class Stack{
 protected:
-    enum {MAX = INT_MAX};
-    int top_of_stack;
+    const int GrowsFactor = 10;
+    int capacity;
 public:
     int size;
-    T *st = new T[MAX];
-    Stack() : top_of_stack(0), size(0){}
-    ~Stack(){ delete[] st; }
+    T* st = new T[capacity];
+    Stack(): size(0), capacity(0){}
+    ~Stack() {delete[] st;}
+    void Resize()
+    {
+        if (size + 1 > capacity)
+        {
+            T *new_st = new T[capacity + GrowsFactor];
+            for (size_t i = 0; i < size; ++i)
+                new_st[i] = st[i];
+            capacity += GrowsFactor;
+            delete[] st;
+            st = new_st;
+        }
+    }
     T top()
     {
-        if (IsEmpty())
+        if(IsEmpty())
         {
             throw std::runtime_error("Stack is empty");
         }
-        return st[top_of_stack];
+        return st[size];
     }
     void push(T data)
     {
-        st[++top_of_stack] = data;
-        ++size;
+        Resize();
+        st[++size] = data;
     }
     T pop()
     {
-        if (IsEmpty())
-        {
-            throw std::runtime_error("Stack is empty");
-        }
-        T data = st[top_of_stack];
-        --top_of_stack;
+        if(IsEmpty())
+        throw runtime_error("Stack is empty");
+        T Value = st[size];
         --size;
-        return data;
+        return Value;
     }
-    bool IsEmpty() { return !size; }
+    bool IsEmpty() {return !size;}
     void print(std::ostream &out)
     {
-        for (size_t i = top_of_stack; i > 0; i--)
-        {
+        for(size_t i = size; i > 0; i--){
             out << st[i] << '\n';
         }
     }
-    friend T operator<<(Stack<T> &stack, T data) { stack.push(data); }
-    friend T operator>>(Stack<T> &stack, T data) { stack.pop(); }
-    Stack &operator=(const Stack &stack)
-    {
-        size = stack.size;
-        top_of_stack = stack.top_of_stack;
-        for (size_t i = 1; i <= size; i++)
-        { st[i] = stack.st[i]; }
+    friend T operator<< (Stack<T> &stack, T data) {stack.push(data);}
+    friend T operator>> (Stack<T> &stack, T data) {stack.pop();}
+     Stack& operator=(const Stack& stack){
+
+        this->size = stack.size;
+        for (size_t i = 0; i <= size; i++)
+        {
+            st[i] = stack.st[i];
+        }
         return *this;
     }
-    friend bool operator==(const Stack &stack1, const Stack &stack2)
-    { return (stack1.size == stack2.size); }
-    friend bool operator!=(const Stack &stack1, const Stack &stack2)
-    { return !(stack1 == stack2); }
-    friend bool operator<(const Stack &stack1, const Stack &stack2)
-    { return (stack1.size < stack2.size); }
-    friend bool operator<=(const Stack &stack1, const Stack &stack2)
-    { return (stack1.size < stack2.size || stack1 == stack2); }
-    friend bool operator>(const Stack &stack1, const Stack &stack2)
-    { return (stack1.size > stack2.size); }
-    friend bool operator>=(const Stack &stack1, const Stack &stack2)
-    { return (stack1.size > stack2.size || stack1 == stack2); }
-    T &operator[](const int index) { return st[index]; };
+    friend bool operator== (const Stack &stack1, const Stack &stack2)
+    {return (stack1.size == stack2.size);}
+    friend bool operator!= (const Stack &stack1, const Stack &stack2)
+    {return !(stack1 == stack2);}
+    friend bool operator< (const Stack &stack1, const Stack &stack2)
+    {return (stack1.size < stack2.size);}
+    friend bool operator<= (const Stack &stack1, const Stack &stack2)
+    {return (stack1.size < stack2.size || stack1 == stack2);}
+    friend bool operator> (const Stack &stack1, const Stack &stack2)
+    {return (stack1.size > stack2.size);}
+    friend bool operator>= (const Stack &stack1, const Stack &stack2)
+    {return (stack1.size > stack2.size || stack1 == stack2);}
+    T& operator[](const int index) {return st[index];};
 };
