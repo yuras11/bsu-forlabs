@@ -1,28 +1,33 @@
 #include "functions.h"
+
+static char ForExpressionInBrackets = '0';
+
 bool isOperation(char temp)
 {
     return temp == '+' || temp == '-' || temp == '*' || temp == '/' || temp == '^';
 }
+
 int Priority(char operation)
 {
-    if (operation == '^') {return 3;}
-    if (operation == '*' || operation == '/') {return 2;}
-    if (operation == '+' || operation == '-') {return 1;}
+    if (operation == '^')
+    { return 3; }
+    if (operation == '*' || operation == '/')
+    { return 2; }
+    if (operation == '+' || operation == '-')
+    { return 1; }
     return -1;
 }
+
 double Calculations(double number1, double number2, char operation)
 {
-    if (operation == '+') { return number1 + number2; }
-    if (operation == '-') { return number1 - number2; }
-    if (operation == '*') { return number1 * number2; }
+    if (operation == '+')
+    { return number1 + number2; }
+    if (operation == '-')
+    { return number1 - number2; }
+    if (operation == '*')
+    { return number1 * number2; }
     if (operation == '/')
-    {
-        if (number2 == 0)
-        {
-            throw runtime_error("Can't divide by 0");
-        }
-        return number1 / number2;
-    }
+    { return number1 / number2; }
     if (operation == '^')
     {
         double temp = 1;
@@ -34,80 +39,157 @@ double Calculations(double number1, double number2, char operation)
     }
     return 0;
 }
+
 double CalculatingTheExpression(string expression)
 {
     string temp{};
-    for (char i: expression)
+    int count_opened_brackets = 0;
+    int count_closed_brackets = 0;
+    int count_operations = 0;
+    for (int i = 0; i < expression.size(); ++i)
     {
-        if (i != ' ')
-            temp += i;
+        if(expression[i] != ' ')
+        {
+            temp += expression[i];
+        }
+        if(expression[i] == '(')
+        {
+            ++count_opened_brackets;
+        }
+        else if(expression[i] == ')')
+        {
+            ++count_closed_brackets;
+        }
+        else if(isOperation(expression[i]) && expression[i] != '(' && expression[i] != ')'
+        && i != expression.size() - 1 && i != 0 && expression[i-1] != '(')
+        {
+            ++count_operations;
+        }
+    }
+    if(count_closed_brackets != count_opened_brackets)
+    {
+        throw runtime_error("Incorrect expression");
+    }
+    if(count_operations == 0 && count_opened_brackets == 0)
+    {
+        return stod(expression);
+    }
+    else if (count_operations == 0)
+    {
+        temp = "";
+        for (int i = 0; i < expression.size(); ++i)
+        {
+            if(expression[i] != '(' && expression[i] != ')')
+            {
+                temp += expression[i];
+            }
+        }
+        return stod(temp);
     }
     expression = temp;
-    Stack<char> operations;
-    Stack<double> result;
-    for (size_t i = 0; i < expression.size(); ++i)
+    Stack<char> Operations;
+    Stack<double> Result;
+    for (int i = 0; i < expression.size(); ++i)
     {
         if (isOperation(expression[i]))
         {
-            while (!(operations.IsEmpty()) && Priority(expression[i]) <= Priority(operations.top()))
+            if (i == 0 && expression[i++] == '-')
             {
-                double SecondValue = result >> 0;
-                double FirstValue = result >> 0;
-                result << Calculations(FirstValue, SecondValue, operations >> 0);
+                if (expression[i] == '(')
+                {
+                    string s = "0";
+                    s += temp;
+                    return CalculatingTheExpression(s);
+                }
+                else
+                {
+                    while (!isOperation(expression[i]))
+                    {
+                        temp += expression[i++];
+                    }
+                    Result << stod(temp);
+                }
             }
-            operations << expression[i];
+            while (!(Operations.IsEmpty()) && Priority(expression[i]) <= Priority(Operations.top()))
+            {
+                double second_value = Result >> 0;
+                double first_value = Result >> 0;
+                Result << Calculations(first_value, second_value, Operations >> 0);
+            }
+            Operations << expression[i];
+            if (expression[i + 1] == '-')
+            {
+                if (expression[i + 2] == '(')
+                {
+                    ++i;
+                    temp = "";
+                    while (expression[i] != ')')
+                        temp += expression[++i];
+                    Result << -CalculatingTheExpression(temp);
+                }
+                else
+                {
+                    temp = " ";
+                    i++;
+                    while ((!isOperation(expression[i]) || expression[i] == '-') && i != expression.size())
+                    {
+                        temp += expression[i++];
+                    }
+                    --i;
+                    Result << stod(temp);
+                }
+            }
         }
         else
         {
             if (expression[i] == '(')
             {
-                if (expression[i+1] == '-')
+                if (expression[i + 1] == '-')
                 {
                     ++i;
+                    temp = "";
                     while (expression[i] != ')')
                     {
-                        temp = "";
-                        temp += expression[i];
-                        ++i;
+                        temp += expression[i++];
                     }
-                    result.push(-1*stod(temp));
+                    Result << CalculatingTheExpression(temp);
+                    ++i;
                 }
                 else
                 {
-                    operations << expression[i];
+                    Operations << expression[i];
                 }
             }
             else if (expression[i] == ')')
             {
-                while ((operations.top()) != '(')
+                while ((Operations.top()) != '(')
                 {
-                    double SecondValue = result >> 0;
-                    double FirstValue = result >> 0;
-                    result << Calculations(FirstValue, SecondValue, operations >> 0);
+                    double second_value = Result >> 0;
+                    double first_value = Result >> 0;
+                    Result << Calculations(first_value, second_value, Operations >> 0);
                 }
-                operations >> 0;
+                Operations >> 0;
             }
             else
             {
-                temp = "";
-                while (!isOperation(expression[i]) && expression[i] != ')'
-                       && expression[i] != '(' && i != expression.size())
+                temp = " ";
+                while (!isOperation(expression[i]) && expression[i] != ')' && expression[i] != '('
+                       && i != expression.size())
                 {
-                    temp += expression[i];
-                    ++i;
+                    temp += expression[i++];
                 }
                 --i;
-                result.push(stod(temp));
+                Result << stod(temp);
             }
         }
     }
-    while (!(operations.IsEmpty()))
+    while (!(Operations.IsEmpty()))
     {
-        double r = result >> 0;
-        double l = result >> 0;
-        result << Calculations(l, r, operations >> 0);
+        double SecondValue = Result >> 0;
+        double FirstValue = Result >> 0;
+        Result << Calculations(FirstValue, SecondValue, Operations >> 0);
     }
-    return result.top();
+    return Result.top();
 }
 void solution()
 {
