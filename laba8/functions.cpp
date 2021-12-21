@@ -1,7 +1,5 @@
 #include "functions.h"
 
-static char ForExpressionInBrackets = '0';
-
 bool isOperation(char temp)
 {
     return temp == '+' || temp == '-' || temp == '*' || temp == '/' || temp == '^';
