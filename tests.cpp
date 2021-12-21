@@ -1,5 +1,5 @@
-#include "functions.h"
 #include "gtest/gtest.h"
+#include "functions.h"
 TEST(testing_stack, test1)
 {
     Stack<int> stack;
@@ -11,6 +11,7 @@ TEST(testing_stack, test2)
     stack << 5;
     ASSERT_EQ(stack.IsEmpty(), false);
     ASSERT_EQ(stack.size, 1);
+    ASSERT_EQ(stack.GetCapacity(), 5);
     ASSERT_EQ(stack.pop(), 5);
 }
 TEST(testing_stack, test3)
@@ -73,6 +74,7 @@ TEST(testing_stack, test9)
     stack << 98;
     stack << 43;
     ASSERT_EQ(stack[5], 98);
+    ASSERT_EQ(stack.GetCapacity(), 15);
 }
 TEST(testing_stack, test10)
 {
@@ -138,71 +140,116 @@ TEST(testing_Calculations, test14)
 }
 TEST(testing_CalculatingTheExpression, test15)
 {
-    string s = "(-9)+9";
+    string s = "-9+9";
     ASSERT_EQ(CalculatingTheExpression(s), 0);
 }
 TEST(testing_CalculatingTheExpression, test16)
 {
+    string s = "-1-2-3-4";
+    ASSERT_EQ(CalculatingTheExpression(s), -10);
+}
+TEST(testing_CalculatingTheExpression, test17)
+{
+    string s = "7+-5";
+    ASSERT_EQ(CalculatingTheExpression(s), 2);
+}
+TEST(testing_CalculatingTheExpression, test18)
+{
+    string s = "7+-8+-5+-1";
+    ASSERT_EQ(CalculatingTheExpression(s), -7);
+}
+TEST(testing_CalculatingTheExpression, test19)
+{
+    string s = "-2*5*-7";
+    ASSERT_EQ(CalculatingTheExpression(s), 70);
+}
+TEST(testing_CalculatingTheExpression, test20)
+{
+    string s = "-(8+8)*3";
+    ASSERT_EQ(CalculatingTheExpression(s), -48);
+}
+TEST(testing_CalculatingTheExpression, test21)
+{
+    string s = "(9-89)*2/4+40";
+    ASSERT_EQ(CalculatingTheExpression(s), 0);
+}
+TEST(testing_CalculatingTheExpression, test22)
+{
+    string s = "-9*-8*-2*-1";
+    ASSERT_EQ(CalculatingTheExpression(s), 144);
+}
+TEST(testing_CalculatingTheExpression, test23)
+{
+    string s = "(7^2+51)/100+9^2+2^4+2";
+    ASSERT_EQ(CalculatingTheExpression(s), 100);
+}
+TEST(testing_CalculatingTheExpression, test24)
+{
+    string s = "-78-32+11^2";
+    ASSERT_EQ(CalculatingTheExpression(s), 11);
+}
+TEST(testing_CalculatingTheExpression, test25)
+{
     string s = "(9-10)*9";
     ASSERT_EQ(CalculatingTheExpression(s), -9);
 }
-TEST(testing_CalculatingTheExpression, test17)
+TEST(testing_CalculatingTheExpression, test26)
 {
     string s = "(11-9)*28";
     ASSERT_EQ(CalculatingTheExpression(s), 56);
 }
-TEST(testing_CalculatingTheExpression, test18)
+TEST(testing_CalculatingTheExpression, test27)
 {
     string s = "12^2+3";
     ASSERT_EQ(CalculatingTheExpression(s), 147);
 }
-TEST(testing_CalculatingTheExpression, test19)
+TEST(testing_CalculatingTheExpression, test28)
 {
     string s = "11*3^2-9";
     ASSERT_EQ(CalculatingTheExpression(s), 90);
 }
-TEST(testing_CalculatingTheExpression, test20)
+TEST(testing_CalculatingTheExpression, test29)
 {
     string s = "32^2-34/2";
     ASSERT_EQ(CalculatingTheExpression(s), 1007);
 }
-TEST(testing_CalculatingTheExpression, test21)
+TEST(testing_CalculatingTheExpression, test30)
 {
-    string s = "((-9)+10)*21";
-    ASSERT_EQ(CalculatingTheExpression(s), 21);
+    string s = "(-9+10)*2175";
+    ASSERT_EQ(CalculatingTheExpression(s), 2175);
 }
-TEST(testing_CalculatingTheExpression, test22)
+TEST(testing_CalculatingTheExpression, test31)
 {
-    string s = "(((-9)-18)/3)^2";
-    ASSERT_EQ(CalculatingTheExpression(s), 81);
+    string s = "-9+-5*-3+98-2^6";
+    ASSERT_EQ(CalculatingTheExpression(s), 40);
 }
-TEST(testing_CalculatingTheExpression, test23)
+TEST(testing_CalculatingTheExpression, test32)
 {
-    string s = "(-7)^3/7-9*6+89";
-    ASSERT_EQ(CalculatingTheExpression(s), -14);
+    string s = "-4^2";
+    ASSERT_EQ(CalculatingTheExpression(s), 16);
 }
-TEST(testing_CalculatingTheExpression, test24)
+TEST(testing_CalculatingTheExpression, test33)
 {
     string s = "7.5^2+4.78/25";
     ASSERT_DOUBLE_EQ(CalculatingTheExpression(s), 56.4412);
 }
-TEST(testing_CalculatingTheExpression, test25)
+TEST(testing_CalculatingTheExpression, test34)
 {
     string s = "5/10+23.7-6.3^2";
     ASSERT_DOUBLE_EQ(CalculatingTheExpression(s), -15.49);
 }
-TEST(testing_CalculatingTheExpression, test26)
+TEST(testing_CalculatingTheExpression, test35)
 {
-    string s = "(4.5)^3*(8-9)+7.5/0.3";
+    string s = "(4.5)^3*-1+7.5/0.3";
     ASSERT_DOUBLE_EQ(CalculatingTheExpression(s), -66.125);
 }
-TEST(testing_CalculatingTheExpression, test27)
+TEST(testing_CalculatingTheExpression, test36)
 {
-    string s = "(-8)*65.1-43.67+(1.2)^4";
+    string s = "-8*65.1-43.67+(1.2)^4";
     ASSERT_DOUBLE_EQ(CalculatingTheExpression(s), -562.3964);
 }
-TEST(testing_CalculatingTheExpression, test28)
+TEST(testing_CalculatingTheExpression, test37)
 {
-    string s = "5.6+89-(6.1)^2+766.877"; // 94.6 - 37.21 + 766.877
+    string s = "5.6+89-(6.1)^2+766.877";
     ASSERT_DOUBLE_EQ(CalculatingTheExpression(s), 824.267);
 }
