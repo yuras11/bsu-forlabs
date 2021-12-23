@@ -1,19 +1,19 @@
 #include <iostream>
-#include <ctime>
 #include <iomanip>
+#include <ctime>
 #include <cstdlib>
 #include <vector>
 using namespace std;
 void fillMatrix(vector<vector<int>> &matrix, int size);
 void drawMatrix(vector<vector<int>> &matrix, int size);
+bool CheckOnLocalMax(vector<vector<int>> & matrix, int x, int y, int size);
 void localMax(vector<vector<int>> &matrix, int size);
 int getMatrixElement(vector<vector<int>> &matrix, int i, int j);
-void product_of_elements(vector<vector<int>> &matrix, int size);
+long long product_of_elements(vector<vector<int>> &matrix, int size);
 int main()
 {
-    srand(time(0));
+    srand(time(NULL));
     int size;
-    int i, j;
     cout << "Enter the size of the matrix(from 2 to 10): ";
     cin >> size;
     while (size < 2 || size > 10)
@@ -26,7 +26,7 @@ int main()
     fillMatrix(matrix,size);
     drawMatrix(matrix, size);
     localMax(matrix, size);
-    product_of_elements(matrix, size);
+    cout << "The product of elements under the side diagonal is: " << product_of_elements(matrix, size) << endl;
     return 0;
 }
 void fillMatrix(vector<vector<int>> &matrix, int size)
@@ -43,14 +43,11 @@ void fillMatrix(vector<vector<int>> &matrix, int size)
     }
     if (letter == 'r')
     {
-        int MAX;
-        cout << "Enter the maximum element of the array: ";
-        cin >> MAX;
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
             {
-                matrix[i][j] = 10 + rand() % MAX;
+                matrix[i][j] = rand() % 10;
             }
         }
     }
@@ -64,7 +61,7 @@ void fillMatrix(vector<vector<int>> &matrix, int size)
             {
                 if (i == j)
                 {
-                    cout << "Enter " << count << " element of the main diagonal of the matrix: ";
+                    cout << "Enter the " << count <<  " element of the main diagonal of the matrix: ";
                     cin >> matrix[i][j];
                     count++;
                 }
@@ -75,10 +72,10 @@ void fillMatrix(vector<vector<int>> &matrix, int size)
                         cout << "Enter the " << s << " element of the matrix: ";
                         cin >> matrix[i][j];
                         s++;
-
                     }
                 }
             }
+
         }
     }
 }
@@ -96,6 +93,73 @@ void drawMatrix(vector<vector<int>> &matrix, int size)
         cout << setw(2) << "|" << endl;
     }
 }
+
+bool CheckOnLocalMax(vector<vector<int>> & matrix, int x, int y, int size)
+{
+    if (x == 0)
+    {
+        if (y == 0)
+        {
+            if (matrix[x][y] > matrix[x+1][y] && matrix[x][y] > matrix[x][y+1] && matrix[x][y] > matrix[x+1][y+1])
+            {
+                return true;
+            }
+        }
+        if (y == size-1)
+        {
+            if (matrix[x][y] > matrix[x+1][y] && matrix[x][y] > matrix[x][y-1] && matrix[x][y] > matrix[x+1][y-1])
+            {
+                return true;
+            }
+        }
+        if (y != 0 && y != size)
+        {
+            if (matrix[x][y] > matrix[x][y-1] && matrix[x][y] > matrix[x][y+1] &&
+                matrix[x][y] > matrix[x+1][y+1] && matrix[x][y] > matrix[x+1][y] &&
+                matrix[x][y] > matrix[x+1][y-1])
+            {
+                return true;
+            }
+        }
+    }
+    if(x == size-1)
+    {
+        if (y == 0)
+        {
+            if (matrix[x][y] > matrix[x-1][y] && matrix[x][y] > matrix[x][y+1] && matrix[x][y] > matrix[x-1][y+1])
+            {
+                return true;
+            }
+        }
+        if (y == size-1)
+        {
+            if (matrix[x][y] > matrix[x-1][y] && matrix[x][y] > matrix[x][y-1] && matrix[x][y] > matrix[x-1][y-1])
+            {
+                return true;
+            }
+        }
+        if (y != 0 && y != size)
+        {
+            if (matrix[x][y] > matrix[x][y-1] && matrix[x][y] > matrix[x][y+1] &&
+                matrix[x][y] > matrix[x-1][y+1] && matrix[x][y] > matrix[x-1][y] &&
+                    matrix[x][y] > matrix[x-1][y-1])
+            {
+                return true;
+            }
+        }
+    }
+    if (x != 0 && x != size-1 && y != 0 && y != size-1)
+    {
+        if (matrix[x][y] > matrix[x][y-1] && matrix[x][y] > matrix[x][y+1] &&
+            matrix[x][y] > matrix[x-1][y] && matrix[x][y] > matrix[x+1][y]
+            && matrix[x][y] > matrix[x-1][y-1] && matrix[x][y] > matrix[x+1][y-1]
+            && matrix[x][y] > matrix[x-1][y+1] && matrix[x][y] > matrix[x+1][y+1])
+        {
+            return true;
+        }
+    }
+    return false;
+}
 void localMax(vector<vector<int>> &matrix, int size)
 {
     int max = matrix[0][0];
@@ -104,7 +168,7 @@ void localMax(vector<vector<int>> &matrix, int size)
     {
         for (int j = 0; j < size; j++)
         {
-            if (max < matrix[i][j])
+            if (CheckOnLocalMax(matrix, i, j, size))
             {
                 max = matrix[i][j];
                 x = i;
@@ -112,12 +176,31 @@ void localMax(vector<vector<int>> &matrix, int size)
             }
         }
     }
-    cout << "The maximum element is: " << max << endl;
-    cout << "The coordinates of the maximum element is: " << "[ " << x << ", " << y << " ]"<< endl;
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            if (matrix[i][j] > matrix[x][y] && CheckOnLocalMax(matrix, i, j, size))
+            {
+                max = matrix[i][j];
+                x = i;
+                y = j;
+            }
+        }
+    }
+    if (CheckOnLocalMax(matrix, x, y, size))
+    {
+        cout << "The largest local max is: " << max << endl;
+        cout << "The coordinates of the largest local max are: " << "[ " << x << " , " << y << " ]" << endl;
+    }
+    else
+    {
+        cout << "There's no local max in the matrix" << endl;
+    }
 }
-void product_of_elements(vector<vector<int>> &matrix, int size)
+long long product_of_elements(vector<vector<int>> &matrix, int size)
 {
-    int product = 1;
+    long long product = 1;
     for (int j = 0; j < size; j++)
     {
         for (int i = size - 1; i > size - j - 1; i--)
@@ -125,7 +208,7 @@ void product_of_elements(vector<vector<int>> &matrix, int size)
             product *= getMatrixElement(matrix, i, j);
         }
     }
-    cout << "The product is: " << product << endl;
+    return product;
 }
 int getMatrixElement(vector<vector<int>> &matrix, int i, int j)
 {
