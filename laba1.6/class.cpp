@@ -1,8 +1,17 @@
 #include "class.h"
 #include <cassert>
-Fraction::Fraction(int numerator, int denominator):
-        m_numerator(numerator), m_denominator(denominator)
+Fraction::Fraction(int numerator, int denominator)
 {
+    int copy_of_numerator = numerator;
+    numerator /= abs(gcd(numerator, denominator));
+    denominator /= abs(gcd(copy_of_numerator, denominator));
+    if ((numerator > 0 && denominator < 0) || (numerator < 0 && denominator < 0))
+    {
+        numerator *= -1;
+        denominator *= -1;
+    }
+    m_numerator = numerator;
+    m_denominator = denominator;
     assert (denominator != 0);
 }
 Fraction::Fraction(const Fraction &copy)
@@ -13,22 +22,12 @@ Fraction::Fraction(const Fraction &copy)
 Fraction Fraction::proper_Fraction(Fraction f)
 {
     Fraction Drob(f.getNumerator(), f.getDenominator());
-    if (f.getNumerator() < 0 && f.getDenominator() < 0)
-    {
-        Fraction Drob_1(-1*f.getNumerator(), -1*f.getDenominator());
-        Drob = Drob_1;
-    }
-    if (f.getNumerator() > 0 && f.getDenominator() < 0)
-    {
-        Fraction Drob_2 ( -1 *f.getNumerator(), -1*f.getDenominator());
-        Drob = Drob_2;
-    }
     int p = abs(gcd(Drob.getNumerator(), Drob.getDenominator()));
-    Fraction Drob_3(Drob.getNumerator()/p, Drob.getDenominator()/p);
-    Drob = Drob_3;
+    Fraction Drob_1(Drob.getNumerator()/p, Drob.getDenominator()/p);
+    Drob = Drob_1;
     return Drob;
 }
-int Fraction::gcd (int a, int b)
+int gcd (int a, int b)
 {
     while (b)
     {
